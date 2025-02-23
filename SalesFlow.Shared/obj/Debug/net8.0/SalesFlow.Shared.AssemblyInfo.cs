@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SalesFlow.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ed86ef058eb804b70fec0ae42891dd03bfb5ec78")]
 [assembly: System.Reflection.AssemblyProductAttribute("SalesFlow.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SalesFlow.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
