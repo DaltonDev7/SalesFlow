@@ -9,5 +9,7 @@ namespace SalesFlow.Domain.Common
         public string? LastModifiedBy { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? LastModified { get; set; }
+        
+        public int? Status { get; set; }
     }
 }
