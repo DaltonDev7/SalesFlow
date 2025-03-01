@@ -11,6 +11,9 @@ namespace SalesFlow.Persistence.EntityConfiguration
         {
             builder.ToTable("Products");
             builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Price)
+             .HasColumnType("decimal(10,2)");
         }
     }
 }

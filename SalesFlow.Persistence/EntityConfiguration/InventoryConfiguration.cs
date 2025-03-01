@@ -6,13 +6,12 @@ using SalesFlow.Domain.Entities;
 
 namespace SalesFlow.Persistence.EntityConfiguration
 {
-    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+    public class InventoryConfiguration : IEntityTypeConfiguration<Inventory>
     {
-        public void Configure(EntityTypeBuilder<Category> builder)
+        public void Configure(EntityTypeBuilder<Inventory> builder)
         {
-            builder.ToTable("Categories");
+            builder.ToTable("Inventory");
             builder.HasKey(x => x.Id);
         }
     }
 }
-

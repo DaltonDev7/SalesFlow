@@ -34,12 +34,21 @@ namespace SalesFlow.Persistence.Context
         {
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new InventoryConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
+            modelBuilder.ApplyConfiguration(new PaymentConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Category> Category { get; set; }
         public DbSet<Product> Product { get; set; }
+        public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
+        public DbSet<PaymentMethod> PaymentMethod { get; set; }
+        public DbSet<Payments> Payments { get; set; }
 
     }
 }
