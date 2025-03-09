@@ -5,18 +5,42 @@
 <MudSnackbarProvider />
 <MudPopoverProvider />
 
-<div class="page">
-    <div class="sidebar">
+<MudLayout>
+    <MudAppBar>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="DrawerToggle" />
+        D' Luis Parrillada
+        <MudSpacer />
+        @* <MudIconButton Icon="@Icons.Material.Filled.AccountBox" Color="Color.Inherit" /> *@
+        <MudMenu Icon="@Icons.Material.Filled.AccountBox" Color="Color.Inherit"
+                 AriaLabel="Open user menu"
+                 AnchorOrigin="Origin.BottomCenter"
+                 >
+            <ChildContent>
+                <MudMenuItem Label="Profile" />
+                <MudMenuItem Label="Configuraciones" />
+                <MudMenuItem Label="Cerrar sesión" />
+            </ChildContent>
+        </MudMenu>
+
+    </MudAppBar>
+
+
+    <MudDrawer @bind-Open="_drawerOpen">
         <NavMenu />
-    </div>
+    </MudDrawer>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+</MudLayout>
+
+@code{
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+}

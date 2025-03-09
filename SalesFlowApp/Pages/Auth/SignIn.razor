@@ -13,7 +13,7 @@
             <MudGrid>
                 <!-- Columna para el campo Correo -->
                 <MudItem xs="12">
-                    <MudTextField Label="Correo" @bind-Value="correo" Variant="Variant.Filled" FullWidth="true" Margin="Margin.Normal" />
+                    <MudTextField Label="Correo" @bind-Value="correo" Variant="Variant.Outlined" FullWidth="true" Margin="Margin.Normal" Foc />
                 </MudItem>
             </MudGrid>
 
@@ -26,7 +26,7 @@
             </MudGrid>
 
             <!-- Botón verde -->
-            <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true" OnClick="EnviarFormulario" Class="mt-4">Iniciar sesión</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="EnviarFormulario" Class="mt-4">Iniciar sesión</MudButton>
         </MudCardContent>
     </MudCard>
 </MudContainer>
