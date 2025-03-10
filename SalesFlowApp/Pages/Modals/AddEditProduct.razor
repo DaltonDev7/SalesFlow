@@ -1,0 +1,57 @@
+﻿@using SalesFlowApp.Models
+@using System.Globalization
+
+<MudDialog Style="width:400px">
+    <DialogContent>
+        <MudContainer Style="max-height: 400px; overflow-y: scroll" Class="m-0 p-0">
+
+            <EditForm Model="@_producto" OnValidSubmit="Guardar">
+                <MudTextField @bind-Value="_producto.Name" Class="mb-3"
+                              Label="Nombre" Variant="Variant.Outlined" />
+
+                <MudTextField @bind-Value="_producto.Description" Label="Descripcion" Variant="Variant.Outlined" Lines="3" />
+
+                <MudNumericField @bind-Value="_producto.Price"
+                                 Label="Precio"
+                                 Variant="Variant.Outlined"
+                                 Adornment="Adornment.End"
+                                 AdornmentIcon="@Icons.Material.Filled.AttachMoney"
+                                 DecimalPlaces="2"
+                                 Min="0"
+                                 Format="N2" Culture="@_en"
+                                 T="decimal" />
+
+                <MudSelect @bind-Value="_producto.Available" Label="Disponible" Variant="Variant.Outlined">
+                    <MudSelectItem Value="true">SI</MudSelectItem>
+                    <MudSelectItem Value="false">NO</MudSelectItem>
+                </MudSelect>
+
+            </EditForm>
+
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Guardar">Guardar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private Product _producto = new Product(); // Inicialización del modelo Producto
+    public CultureInfo _en = CultureInfo.GetCultureInfo("en-US");
+
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async Task Guardar()
+    {
+        // Aquí puedes agregar la lógica para guardar el producto
+        Console.WriteLine($"Producto Guardado: {_producto.Name}, Disponible: {_producto.Available}");
+        MudDialog.Close();  // Cierra el diálogo al guardar
+    }
+}
