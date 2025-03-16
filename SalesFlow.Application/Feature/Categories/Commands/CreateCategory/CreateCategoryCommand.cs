@@ -1,10 +1,9 @@
-﻿
-
-using Azure;
+﻿using AutoMapper;
 using MediatR;
+using SalesFlow.Application.Interfaces.Repositories;
 using SalesFlow.Application.Wrappers;
 using SalesFlow.Domain.Entities;
-using SalesFlow.Persistence.Context;
+
 
 namespace SalesFlow.Application.Feature.Categories.Commands.CreateCategory
 {
@@ -16,20 +15,23 @@ namespace SalesFlow.Application.Feature.Categories.Commands.CreateCategory
 
     public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, ApiResponse<int>>
     {
-        private readonly ApplicationContext _context;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
-        public CreateCategoryCommandHandler(ApplicationContext context)
+        public CreateCategoryCommandHandler(ICategoryRepository categoryRepository, IMapper mapper)
         {
-            _context = context;
+            _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
-        public async Task<ApiResponse<int>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<int>> Handle(CreateCategoryCommand command, CancellationToken cancellationToken)
         {
-            var newCategory = new Category { Name = request.Name, Description = request.Description };
-            _context.Category.Add(newCategory);
-            await _context.SaveChangesAsync();
 
+            var newCategory = _mapper.Map<Category>(command);
+            await _categoryRepository.InsertAndSave(newCategory);
+        
             return new ApiResponse<int>(newCategory.Id);
+
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.Extensions.DependencyInjection;
+using SalesFlow.Application.Mappings;
 using System.Reflection;
 
 namespace SalesFlow.Application
@@ -15,7 +16,8 @@ namespace SalesFlow.Application
                 configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });
 
-      
+            services.AddAutoMapper(typeof(CategoryProfile));
+
         }
     }
 }
