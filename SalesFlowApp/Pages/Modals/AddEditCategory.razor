@@ -1,0 +1,89 @@
+﻿@using SalesFlowApp.FluentValidation
+@using SalesFlowApp.Models
+@using MudBlazor
+
+
+<MudDialog Style="width:400px" DisableBackdropClick="true">
+    <DialogContent>
+        <MudContainer Style="height: auto; overflow-y: scroll" Class="m-0 p-0">
+
+            @*   <EditForm Model="@_producto" OnSubmit="Guardar">
+            <DataAnnotationsValidator /> *@
+            <MudForm @ref="form" Validation="@(CategoryValidator.ValidateValue)" ValidationDelay="0">
+
+                <MudTextField @bind-Value="_category.Name"
+                              For="@(() => _category.Name)"
+                              Label="Nombre"
+                              Immediate="true"
+                              Variant="Variant.Outlined"
+                              Class="mb-3" />
+
+                <MudTextField @bind-Value="_category.Description"
+                              Label="Descripción"
+                              Variant="Variant.Outlined"
+                              Lines="3" />
+
+
+            </MudForm>
+            @* </EditForm> *@
+           @*  <MudCardActions>
+                <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="Cancel">Cancelar</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Guardar</MudButton>
+            </MudCardActions> *@
+
+        </MudContainer>
+
+         <DialogActions>
+            <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="Cancel">Cancelar</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Guardar</MudButton>
+        </DialogActions>
+
+    </DialogContent>
+
+</MudDialog>
+@code {
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; }
+    Category _category = new Category();
+    private MudForm form;
+    CategoryValidator CategoryValidator = new CategoryValidator();
+
+    private async Task Submit()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+
+    private async Task Guardar()
+    {
+        // Verificar si el formulario es válido antes de guardar
+        if (form.IsValid)
+        {
+            // Guardar la data de tu producto
+            // Aquí iría el código para guardar el producto
+            Console.WriteLine("Formulario válido, guardando producto...");
+            StateHasChanged();
+        }
+        else
+        {
+            // Si el formulario no es válido, mostrar los errores
+            Console.WriteLine("Formulario inválido, por favor corrija los errores.");
+            await form.Validate();
+        }
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+
+}

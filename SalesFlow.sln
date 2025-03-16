@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{D969C6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesFlow.Api", "SalesFlow.Api\SalesFlow.Api.csproj", "{3D8CB209-2F12-43CB-BBDA-6661EEC15EF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesFlowApp", "SalesFlowApp\SalesFlowApp.csproj", "{527915C5-9B6F-4E41-B16E-F0B4909CEDF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesFlowApp", "SalesFlowApp\SalesFlowApp.csproj", "{527915C5-9B6F-4E41-B16E-F0B4909CEDF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

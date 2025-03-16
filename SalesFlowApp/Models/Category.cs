@@ -1,4 +1,6 @@
-﻿namespace SalesFlowApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SalesFlowApp.Models
 {
     public class Category
     {
@@ -8,7 +10,8 @@
         public DateTime? Created { get; set; }
         public DateTime? LastModified { get; set; }
 
-        public required string Name { get; set; }
-        public required string Description { get; set; }
+        [Required(ErrorMessage = "El nombre es obligatorio")]
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }
