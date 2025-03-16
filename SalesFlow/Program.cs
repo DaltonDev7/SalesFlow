@@ -1,4 +1,5 @@
 using SalesFlow.Components;
+using SalesFlow.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+
+builder.Services.AddPersistenceLayer(builder.Configuration);
+
+
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

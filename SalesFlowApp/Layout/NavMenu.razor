@@ -1,0 +1,21 @@
+﻿
+<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Panel de control</MudNavLink>
+    @* <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.ShoppingCart">Agregar orden</MudNavLink> *@
+    <MudNavLink Href="/Productos" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Store">Productos</MudNavLink>
+    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Inventory">Inventario</MudNavLink>
+    <MudNavLink Href="/Categorias" Icon="@Icons.Material.Filled.Category">Categorias</MudNavLink>
+    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.History">Historial</MudNavLink>
+</MudNavMenu>
+
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

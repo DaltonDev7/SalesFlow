@@ -1,0 +1,63 @@
+﻿@page "/signin"
+@layout Layout.AuthLayout
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using MudBlazor
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="d-flex justify-center align-center" Style="height: 100vh;">
+    <MudCard Class="pa-4" Style="max-width: 430px; width: 100%;">
+        <MudCardContent>
+            <MudText Typo="Typo.h6" Align="Align.Center" GutterBottom="true">Bienvenido</MudText>
+
+            <!-- MudGrid y MudItem para crear una cuadrícula -->
+            <MudGrid>
+                <!-- Columna para el campo Correo -->
+                <MudItem xs="12">
+                    <MudTextField Label="Correo" @bind-Value="correo" Variant="Variant.Outlined" FullWidth="true" Margin="Margin.Normal" Foc />
+                </MudItem>
+            </MudGrid>
+
+            <MudGrid>
+
+               <MudItem xs="12">
+                    <MudTextField @bind-Value="clave" Label="Password" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" />
+               </MudItem>
+
+            </MudGrid>
+
+            <!-- Botón verde -->
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="EnviarFormulario" Class="mt-4">Iniciar sesión</MudButton>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private string correo;
+    private string clave;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+    bool isShow;
+
+    private void EnviarFormulario()
+    {
+        // Aquí podrías agregar la lógica para enviar el formulario
+        Console.WriteLine($"Correo: {correo}, Clave: {clave}");
+    }
+  
+    void ButtonTestclick()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+
+}
