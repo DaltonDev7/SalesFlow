@@ -1,0 +1,142 @@
+﻿@using SalesFlowApp.FluentValidation
+@using SalesFlowApp.Models
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
+
+<MudDialog Style="width:400px" DisableBackdropClick="true">
+    <DialogContent>
+        <MudContainer Style="max-height: 700px; overflow-y: scroll" Class="m-0 p-0">
+
+          @*   <EditForm Model="@_producto" OnSubmit="Guardar">
+                <DataAnnotationsValidator /> *@
+                <MudForm @ref="form" Validation="@(ProductValidator.ValidateValue)" ValidationDelay="0">
+
+                    <MudTextField @bind-Value="_producto.Name"
+                                  For="@(() => _producto.Name)"
+                                  Label="Nombre"
+                              Immediate="true"
+                                  Variant="Variant.Outlined"
+                                  Class="mb-3"  />
+
+                    <MudTextField @bind-Value="_producto.Description"
+                                  Label="Descripción"
+                                  Variant="Variant.Outlined"
+                                  Lines="3" />
+
+                    <MudSelect T="int?"
+                               @bind-Value="_producto.IdCategoria"
+                               For="@(() => _producto.IdCategoria)"
+                               Label="Selecciona una categoría"
+                               Immediate="true"
+                               Variant="Variant.Outlined"
+                               Clearable>
+                        @foreach (var category in categories)
+                        {
+                            <MudSelectItem Value="category.Id">@category.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+
+                <MudNumericField @bind-Value="_producto.Price"
+                                 For="@(() => _producto.Price)"
+                                 Label="Precio"
+                                 Variant="Variant.Outlined"
+                                 Adornment="Adornment.End"
+                                 AdornmentIcon="@Icons.Material.Filled.AttachMoney"
+                                 DecimalPlaces="2"
+                                 Min="0"
+                                 Format="N2" Culture="@_en"
+                                 T="decimal?" />
+
+
+                    <MudSelect @bind-Value="_producto.Available"
+                               Label="Disponible"
+                               Variant="Variant.Outlined">
+                        <MudSelectItem Value="true">SI</MudSelectItem>
+                        <MudSelectItem Value="false">NO</MudSelectItem>
+                    </MudSelect>
+
+                </MudForm>
+            @* </EditForm> *@
+            <MudCardActions>
+                <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="Cancel">Cancelar</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Guardar</MudButton>
+            </MudCardActions>
+
+        </MudContainer>
+    </DialogContent>
+
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; }
+    private Product _producto = new Product();
+    private Category? selectedCategory;
+    private MudForm form;
+    public CultureInfo _en = CultureInfo.GetCultureInfo("en-US");
+
+
+    ProductValidator ProductValidator = new ProductValidator();
+
+    List<Category> categories = new List<Category>
+    {
+        new Category { Id = 1, Name = "Entradas", Description = "Platos ligeros para comenzar la comida", Created = DateTime.UtcNow, CreatedBy = "admin" },
+        new Category { Id = 2, Name = "Sopas", Description = "Variedad de sopas y cremas", Created = DateTime.UtcNow, CreatedBy = "admin" },
+        new Category { Id = 3, Name = "Ensaladas", Description = "Opciones frescas y saludables", Created = DateTime.UtcNow, CreatedBy = "admin" },
+        new Category { Id = 4, Name = "Platos Fuertes", Description = "Platos principales con carnes, pescados o vegetarianos", Created = DateTime.UtcNow, CreatedBy = "admin" },
+        new Category { Id = 5, Name = "Postres", Description = "Deliciosos dulces para cerrar la comida", Created = DateTime.UtcNow, CreatedBy = "admin" },
+        new Category { Id = 6, Name = "Bebidas", Description = "Refrescos, jugos, cócteles y más", Created = DateTime.UtcNow, CreatedBy = "admin" },
+        new Category { Id = 7, Name = "Especialidades de la Casa", Description = "Platos exclusivos del chef", Created = DateTime.UtcNow, CreatedBy = "admin" },
+        new Category { Id = 8, Name = "Menú Infantil", Description = "Opciones para los más pequeños", Created = DateTime.UtcNow, CreatedBy = "admin" }
+    };
+
+    private async Task Submit()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+
+        }
+        else
+        {
+            
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        // Asegurar que las propiedades required son null al inicio
+        _producto = new Product
+            {
+                Name = null,
+                IdCategoria = null,
+                Price = null,
+                Available = true
+            };
+        base.OnInitialized();
+    }
+
+    private async Task Guardar()
+    {
+        // Verificar si el formulario es válido antes de guardar
+        if (form.IsValid)
+        {
+            // Guardar la data de tu producto
+            // Aquí iría el código para guardar el producto
+            Console.WriteLine("Formulario válido, guardando producto...");
+            StateHasChanged();
+        }
+        else
+        {
+            // Si el formulario no es válido, mostrar los errores
+            Console.WriteLine("Formulario inválido, por favor corrija los errores.");
+            await form.Validate();
+        }
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+}
