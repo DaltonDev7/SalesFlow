@@ -22,6 +22,10 @@ namespace SalesFlow.Persistence
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IInventoryRepository, InventoryRepository>();
+            services.AddTransient<IIngredientRepository, IngredientRepository>();
+            services.AddTransient<IRecipeRepository, RecipeRepository>();
         }
     }
 }

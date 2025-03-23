@@ -2,6 +2,7 @@
 using AutoMapper;
 using SalesFlow.Application.Dtos;
 using SalesFlow.Application.Feature.Categories.Commands.CreateCategory;
+using SalesFlow.Application.Feature.Products.Commands.CreateProduct;
 using SalesFlow.Domain.Entities;
 
 namespace SalesFlow.Application.Mappings

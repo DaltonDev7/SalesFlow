@@ -31,8 +31,7 @@ namespace SalesFlow.Application.Feature.Categories.Queries
         {
            
             var categories = _mapper.Map<List<GetCategoryDto>>(await _categoryRepository.GetAll());
-            if (categories.Count == 0) throw new ApiException("Categories not found", (int)HttpStatusCode.NoContent);
-
+        
             // Retornar la respuesta API
             return new ApiResponse<IEnumerable<GetCategoryDto>>(categories);
         }
