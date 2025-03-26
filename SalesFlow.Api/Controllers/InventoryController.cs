@@ -4,6 +4,8 @@ using SalesFlow.Application.Feature.Inventories.Queries;
 
 namespace SalesFlow.Api.Controllers
 {
+    [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class InventoryController : BaseApiController
     {
         [HttpPost]

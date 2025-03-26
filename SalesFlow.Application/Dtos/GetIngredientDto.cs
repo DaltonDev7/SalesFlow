@@ -1,11 +1,10 @@
 ﻿
 
-using SalesFlow.Domain.Common;
-
-namespace SalesFlow.Domain.Entities
+namespace SalesFlow.Application.Dtos
 {
-    public class Ingredient : BaseEntity
+    public class GetIngredientDto
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
         public decimal Price { get; set; }
@@ -13,8 +12,5 @@ namespace SalesFlow.Domain.Entities
         public string UnitMeasurement { get; set; }
 
         public Boolean Available { get; set; }
-
-        public ICollection<Recipe> Recipes { get; set; }
-
     }
 }

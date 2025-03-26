@@ -9,6 +9,9 @@ namespace SalesFlow.Application.Dtos
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int IdCategory { get; set; }
+        public string CategoryName { get; set; }
+
+        public Boolean IsIngredient { get; set; }
         public Boolean Available { get; set; }
     }
 }

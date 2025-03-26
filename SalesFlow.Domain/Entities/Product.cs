@@ -13,6 +13,8 @@ namespace SalesFlow.Domain.Entities
         public Boolean Available { get; set; }
         public string? ImageUrl { get; set; }
 
+        public Boolean? IsIngredient { get; set; }
+
         public Category Category { get; set; }
 
         public Inventory Inventory { get; set; }

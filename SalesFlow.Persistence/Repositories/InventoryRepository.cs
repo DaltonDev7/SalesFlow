@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
+using SalesFlow.Application.Dtos;
 using SalesFlow.Application.Interfaces.Repositories;
 using SalesFlow.Domain.Entities;
 using SalesFlow.Persistence.Context;
@@ -11,6 +13,19 @@ namespace SalesFlow.Persistence.Repositories
     {
         public InventoryRepository(ApplicationContext dbContext) : base(dbContext)
         {
+        }
+
+        public async Task<List<GetInventoryDto>> GetInvetoryData()
+        {
+            return await _dbContext.Inventory.Select(i => new GetInventoryDto
+            {
+                Id = i.Id,
+                AvailableQuantity = i.AvailableQuantity,   
+                IdProduct = i.IdProduct,   
+                LastModified = i.LastModified,  
+                ProductName = i.Product.Name,
+                UnitMeasurement = i.UnitMeasurement
+            }).ToListAsync();
         }
     }
 

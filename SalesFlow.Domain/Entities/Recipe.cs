@@ -12,8 +12,8 @@ namespace SalesFlow.Domain.Entities
 
         public string UnitMeasurement { get; set; }
 
-        public Product Product { get; set; }
-        public Ingredient Ingredient { get; set; }
+        public Product Product { get; set; }  // Relación con producto final
+        public Product Ingredient { get; set; }  // Relación con ingrediente (también es un producto)
 
     }
 }

@@ -7,8 +7,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace SalesFlow.Api.Controllers
 {
-    [ApiVersion("1.0")]
-    [SwaggerTag("Mantenimiento de categorias")]
+    [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class CategoryController : BaseApiController
     {
         [HttpPost]

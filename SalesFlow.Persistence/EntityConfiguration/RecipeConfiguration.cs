@@ -12,17 +12,19 @@ namespace SalesFlow.Persistence.EntityConfiguration
             builder.ToTable("Recipes");
             builder.HasKey(x => x.Id);
 
-            // Relación con Product
+
+            // Relación con el producto final
             builder.HasOne(r => r.Product)
                    .WithMany(p => p.Recipes)
                    .HasForeignKey(r => r.IdProduct)
-                   .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.NoAction);
 
-            // Relación con Ingredient
+            // Relación con el ingrediente (que también es un producto)
             builder.HasOne(r => r.Ingredient)
-                   .WithMany(i => i.Recipes)
+                   .WithMany()
                    .HasForeignKey(r => r.IdIngredient)
-                   .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

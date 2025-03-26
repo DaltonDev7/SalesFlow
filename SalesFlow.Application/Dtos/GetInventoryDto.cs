@@ -6,6 +6,9 @@ namespace SalesFlow.Application.Dtos
     {
         public int Id { get; set; }
         public int IdProduct { get; set; }
+
+        public string ProductName { get; set; }
+
         public int AvailableQuantity { get; set; }
         public string UnitMeasurement { get; set; }
         public DateTime? LastModified { get; set; }

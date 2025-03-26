@@ -27,7 +27,7 @@ namespace SalesFlow.Application.Feature.Inventories.Queries
         public async Task<ApiResponse<IEnumerable<GetInventoryDto>>> Handle(GetAllInventoryQuery request, CancellationToken cancellationToken)
         {
 
-            var data = _mapper.Map<List<GetInventoryDto>>(await _repository.GetAll());
+            var data = _mapper.Map<List<GetInventoryDto>>(await _repository.GetInvetoryData());
       
             // Retornar la respuesta API
             return new ApiResponse<IEnumerable<GetInventoryDto>>(data);

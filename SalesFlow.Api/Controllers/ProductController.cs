@@ -22,6 +22,13 @@ namespace SalesFlow.Api.Controllers
             return Ok(await Mediator.Send(new GetAllProductQuery()));
         }
 
+        [HttpGet]
+        [Route("GetIngredients")]
+        public async Task<IActionResult> GetIngridients()
+        {
+            return Ok(await Mediator.Send(new GetAllIngredientsQuery()));
+        }
+
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateProductCommand command)
         {

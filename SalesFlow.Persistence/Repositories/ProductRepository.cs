@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
+using SalesFlow.Application.Dtos;
 using SalesFlow.Application.Interfaces.Repositories;
 using SalesFlow.Domain.Entities;
 using SalesFlow.Persistence.Context;
@@ -13,5 +15,19 @@ namespace SalesFlow.Persistence.Repositories
         }
 
 
+        public async Task<List<GetProductDto>> GetProducts(Boolean isProduct)
+        {
+            return await  _dbContext.Product.Select(p => new GetProductDto
+            {
+                Available = p.Available,
+                CategoryName = p.Category.Name,
+                Name = p.Name,
+                Description = p.Description,
+                Id = p.Id,
+                IdCategory = p.IdCategory,  
+                Price = p.Price,
+                IsIngredient = (bool)p.IsIngredient
+            }).Where(p => p.IsIngredient == isProduct).ToListAsync();
+        }
     }
 }

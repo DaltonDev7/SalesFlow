@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SalesFlow.Persistence.Context;
 
@@ -11,9 +12,11 @@ using SalesFlow.Persistence.Context;
 namespace SalesFlow.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20250325000059_tableAddColumHasIngredient")]
+    partial class tableAddColumHasIngredient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,6 +59,51 @@ namespace SalesFlow.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories", (string)null);
+                });
+
+            modelBuilder.Entity("SalesFlow.Domain.Entities.Ingredient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Available")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UnitMeasurement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ingredients", (string)null);
                 });
 
             modelBuilder.Entity("SalesFlow.Domain.Entities.Inventory", b =>
@@ -284,14 +332,14 @@ namespace SalesFlow.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("HasIngredient")
+                        .HasColumnType("bit");
+
                     b.Property<int>("IdCategory")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("IsIngredient")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
@@ -385,16 +433,16 @@ namespace SalesFlow.Persistence.Migrations
 
             modelBuilder.Entity("SalesFlow.Domain.Entities.Recipe", b =>
                 {
-                    b.HasOne("SalesFlow.Domain.Entities.Product", "Ingredient")
-                        .WithMany()
+                    b.HasOne("SalesFlow.Domain.Entities.Ingredient", "Ingredient")
+                        .WithMany("Recipes")
                         .HasForeignKey("IdIngredient")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SalesFlow.Domain.Entities.Product", "Product")
                         .WithMany("Recipes")
                         .HasForeignKey("IdProduct")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Ingredient");
@@ -405,6 +453,11 @@ namespace SalesFlow.Persistence.Migrations
             modelBuilder.Entity("SalesFlow.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("SalesFlow.Domain.Entities.Ingredient", b =>
+                {
+                    b.Navigation("Recipes");
                 });
 
             modelBuilder.Entity("SalesFlow.Domain.Entities.Product", b =>
