@@ -14,6 +14,23 @@ namespace SalesFlow.Persistence.EntityConfiguration
 
             builder.Property(x => x.Price)
              .HasColumnType("decimal(10,2)");
+
+
+            builder.HasOne(c => c.Category)
+                   .WithMany(p => p.Products)
+                   .HasForeignKey(c => c.IdCategory)
+                   .OnDelete(DeleteBehavior.ClientCascade);
+
+            builder.HasOne(p => p.Inventory)  // Relación 1:1
+              .WithOne(i => i.Product)
+              .HasForeignKey<Inventory>(i => i.IdProduct)
+              .OnDelete(DeleteBehavior.Cascade); // Si se elimina un producto, su inventario también
+
+            // Relación uno a muchos con Recipe
+            builder.HasMany(p => p.Recipes)
+                   .WithOne(r => r.Product)
+                   .HasForeignKey(r => r.IdProduct)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

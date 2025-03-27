@@ -38,6 +38,7 @@ namespace SalesFlow.Persistence.Context
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
+            modelBuilder.ApplyConfiguration(new RecipeConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -49,6 +50,7 @@ namespace SalesFlow.Persistence.Context
         public DbSet<OrderDetail> OrderDetail { get; set; }
         public DbSet<PaymentMethod> PaymentMethod { get; set; }
         public DbSet<Payments> Payments { get; set; }
+        public DbSet<Recipe> Recipe { get; set; }
 
     }
 }

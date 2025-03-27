@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SalesFlow.Application\SalesFlow.Application.csproj" />
     <ProjectReference Include="..\SalesFlow.Domain\SalesFlow.Domain.csproj" />
   </ItemGroup>
 

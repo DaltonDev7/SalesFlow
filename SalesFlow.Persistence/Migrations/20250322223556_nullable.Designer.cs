@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SalesFlow.Persistence.Context;
 
@@ -11,9 +12,11 @@ using SalesFlow.Persistence.Context;
 namespace SalesFlow.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20250322223556_nullable")]
+    partial class nullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -287,12 +290,6 @@ namespace SalesFlow.Persistence.Migrations
                     b.Property<int>("IdCategory")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("IsIngredient")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
@@ -314,51 +311,6 @@ namespace SalesFlow.Persistence.Migrations
                     b.HasIndex("IdCategory");
 
                     b.ToTable("Products", (string)null);
-                });
-
-            modelBuilder.Entity("SalesFlow.Domain.Entities.Recipe", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IdIngredient")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdProduct")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UnitMeasurement")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdIngredient");
-
-                    b.HasIndex("IdProduct");
-
-                    b.ToTable("Recipes", (string)null);
                 });
 
             modelBuilder.Entity("SalesFlow.Domain.Entities.Inventory", b =>
@@ -383,25 +335,6 @@ namespace SalesFlow.Persistence.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("SalesFlow.Domain.Entities.Recipe", b =>
-                {
-                    b.HasOne("SalesFlow.Domain.Entities.Product", "Ingredient")
-                        .WithMany()
-                        .HasForeignKey("IdIngredient")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SalesFlow.Domain.Entities.Product", "Product")
-                        .WithMany("Recipes")
-                        .HasForeignKey("IdProduct")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Ingredient");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("SalesFlow.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
@@ -411,8 +344,6 @@ namespace SalesFlow.Persistence.Migrations
                 {
                     b.Navigation("Inventory")
                         .IsRequired();
-
-                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

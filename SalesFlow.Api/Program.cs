@@ -1,17 +1,24 @@
 using SalesFlow.Persistence;
-
+using SalesFlow.Application;
+using SalesFlow.Api.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
-builder.Services.AddPersistenceLayer(builder.Configuration);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddPersistenceLayer(builder.Configuration);
+builder.Services.AddApplicationLayer();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddApiVersioningExtension();
 
 var app = builder.Build();
 
@@ -25,7 +32,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseErrorHandlingMiddleware();
 app.MapControllers();
 
 app.Run();
