@@ -16,6 +16,13 @@ namespace SalesFlow.Persistence.EntityConfiguration
             // Configurar el tipo de dato de la columna 'Total'
             builder.Property(x => x.Total)
                    .HasColumnType("decimal(10,2)");
+
+   
+            builder.HasOne(o => o.Customer)
+                   .WithMany(c => c.Orders)
+                   .HasForeignKey(o => o.IdCustomer)
+                   .OnDelete(DeleteBehavior.Cascade); 
+
         }
     }
 }

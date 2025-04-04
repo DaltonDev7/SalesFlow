@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SalesFlow.Persistence.Context;
 
@@ -11,9 +12,11 @@ using SalesFlow.Persistence.Context;
 namespace SalesFlow.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20250402012258_createCustomer")]
+    partial class createCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,6 +157,9 @@ namespace SalesFlow.Persistence.Migrations
                     b.Property<int>("IdCustomer")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdUser")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
@@ -173,8 +179,6 @@ namespace SalesFlow.Persistence.Migrations
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdCustomer");
 
                     b.ToTable("Orders", (string)null);
                 });
@@ -218,10 +222,6 @@ namespace SalesFlow.Persistence.Migrations
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdOrder");
-
-                    b.HasIndex("IdProduct");
 
                     b.ToTable("OrdersDetails", (string)null);
                 });
@@ -294,10 +294,6 @@ namespace SalesFlow.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdOrder");
-
-                    b.HasIndex("IdPaymentMethod");
 
                     b.ToTable("Payments", (string)null);
                 });
@@ -411,61 +407,12 @@ namespace SalesFlow.Persistence.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("SalesFlow.Domain.Entities.Order", b =>
-                {
-                    b.HasOne("SalesFlow.Domain.Entities.Customer", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("IdCustomer")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("SalesFlow.Domain.Entities.OrderDetail", b =>
-                {
-                    b.HasOne("SalesFlow.Domain.Entities.Order", "Order")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("IdOrder")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SalesFlow.Domain.Entities.Product", "Product")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("IdProduct")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("SalesFlow.Domain.Entities.Payments", b =>
-                {
-                    b.HasOne("SalesFlow.Domain.Entities.Order", "Order")
-                        .WithMany("Payments")
-                        .HasForeignKey("IdOrder")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SalesFlow.Domain.Entities.PaymentMethod", "PaymentMethod")
-                        .WithMany("Payments")
-                        .HasForeignKey("IdPaymentMethod")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("PaymentMethod");
-                });
-
             modelBuilder.Entity("SalesFlow.Domain.Entities.Product", b =>
                 {
                     b.HasOne("SalesFlow.Domain.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("IdCategory")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -495,29 +442,10 @@ namespace SalesFlow.Persistence.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("SalesFlow.Domain.Entities.Customer", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("SalesFlow.Domain.Entities.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
-
-                    b.Navigation("Payments");
-                });
-
-            modelBuilder.Entity("SalesFlow.Domain.Entities.PaymentMethod", b =>
-                {
-                    b.Navigation("Payments");
-                });
-
             modelBuilder.Entity("SalesFlow.Domain.Entities.Product", b =>
                 {
                     b.Navigation("Inventory")
                         .IsRequired();
-
-                    b.Navigation("OrderDetails");
 
                     b.Navigation("Recipes");
                 });

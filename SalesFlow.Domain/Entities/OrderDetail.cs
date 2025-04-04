@@ -10,5 +10,10 @@ namespace SalesFlow.Domain.Entities
         public int Amount { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal SubTotal { get; set; }
+
+        // Relación con Order
+        public virtual Order Order { get; set; } = null!;
+
+        public virtual Product Product { get; set; } = null!;
     }
 }

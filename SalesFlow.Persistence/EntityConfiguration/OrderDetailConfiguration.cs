@@ -19,6 +19,17 @@ namespace SalesFlow.Persistence.EntityConfiguration
             builder.Property(x => x.SubTotal)
                 .HasColumnType("decimal(10,2)");
 
+            // Relación con Order
+            builder.HasOne(d => d.Order)
+                   .WithMany(o => o.OrderDetails)
+                   .HasForeignKey(d => d.IdOrder)
+                   .OnDelete(DeleteBehavior.Cascade); // Elimina los detalles si se elimina la orden
+
+            // Relación con Product
+            builder.HasOne(od => od.Product)
+                   .WithMany(p => p.OrderDetails)
+                   .HasForeignKey(od => od.IdProduct)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

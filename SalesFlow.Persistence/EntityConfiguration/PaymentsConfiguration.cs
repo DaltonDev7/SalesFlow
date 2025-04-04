@@ -14,6 +14,17 @@ namespace SalesFlow.Persistence.EntityConfiguration
 
             builder.Property(x => x.AmountPaid)
               .HasColumnType("decimal(10,2)");
+
+            builder.HasOne(p => p.PaymentMethod)
+             .WithMany(m => m.Payments)
+             .HasForeignKey(p => p.IdPaymentMethod)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación con Order
+            builder.HasOne(p => p.Order)
+                   .WithMany(o => o.Payments)  // Una orden puede tener varios pagos
+                   .HasForeignKey(p => p.IdOrder)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

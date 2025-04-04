@@ -10,5 +10,9 @@ namespace SalesFlow.Domain.Entities
         public decimal AmountPaid { get; set; }
         public DateTime PaymentDate { get; set; }
 
+
+        public PaymentMethod PaymentMethod { get; set; }
+
+        public Order Order { get; set; }
     }
 }

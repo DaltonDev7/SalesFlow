@@ -20,5 +20,8 @@ namespace SalesFlow.Domain.Entities
         public Inventory Inventory { get; set; }
 
         public ICollection<Recipe> Recipes { get; set; }
+
+        // Relación con OrderDetails
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

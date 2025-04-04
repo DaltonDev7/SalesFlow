@@ -11,6 +11,11 @@ namespace SalesFlow.Persistence.EntityConfiguration
         {
             builder.ToTable("PaymentMethods");
             builder.HasKey(x => x.Id);
+
+            builder.HasMany(p => p.Payments)
+              .WithOne(p => p.PaymentMethod)
+              .HasForeignKey(p => p.IdPaymentMethod)
+              .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
