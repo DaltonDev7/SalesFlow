@@ -16,7 +16,7 @@ namespace SalesFlow.Domain.Entities
         public DateTime? Created { get; set; }
         public DateTime? LastModified { get; set; }
 
-        //public ICollection<ApplicationUserRoles> UserRoles { get; set; } = new List<ApplicationUserRoles>();
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 
 }

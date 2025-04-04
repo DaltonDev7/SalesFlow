@@ -21,7 +21,12 @@ namespace SalesFlow.Persistence.EntityConfiguration
             builder.HasOne(o => o.Customer)
                    .WithMany(c => c.Orders)
                    .HasForeignKey(o => o.IdCustomer)
-                   .OnDelete(DeleteBehavior.Cascade); 
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(o => o.User)
+                 .WithMany(c => c.Orders)
+                 .HasForeignKey(o => o.IdEmploye)
+                 .OnDelete(DeleteBehavior.Cascade);
 
         }
     }
