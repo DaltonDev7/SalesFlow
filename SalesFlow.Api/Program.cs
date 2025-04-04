@@ -1,6 +1,5 @@
 using SalesFlow.Persistence;
 using SalesFlow.Application;
-using SalesFlow.Identity;
 using SalesFlow.Api.Extensions;
 
 
@@ -16,7 +15,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddPersistenceLayer(builder.Configuration);
-builder.Services.AddIdentityInfrastructureForApi(builder.Configuration);
 builder.Services.AddApplicationLayer();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

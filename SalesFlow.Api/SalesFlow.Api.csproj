@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SalesFlow.Application\SalesFlow.Application.csproj" />
-    <ProjectReference Include="..\SalesFlow.Identity\SalesFlow.Identity.csproj" />
     <ProjectReference Include="..\SalesFlow.Persistence\SalesFlow.Persistence.csproj" />
   </ItemGroup>
 

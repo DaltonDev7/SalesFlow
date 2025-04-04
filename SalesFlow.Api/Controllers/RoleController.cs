@@ -1,11 +1,7 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SalesFlow.Application.Dtos.Authentication;
-using SalesFlow.Application.Exception;
-using SalesFlow.Application.Feature.Products.Commands.CreateProduct;
 using SalesFlow.Application.Interfaces.Services;
 using SalesFlow.Application.Wrappers;
-using SalesFlow.Identity.Services;
 
 namespace SalesFlow.Api.Controllers
 {

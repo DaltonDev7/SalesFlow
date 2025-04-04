@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,11 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SalesFlow.Application.Interfaces.Services;
+using SalesFlow.Application.Models;
+using SalesFlow.Application.Services;
 using SalesFlow.Application.Wrappers;
+using SalesFlow.Domain.Entities;
 using SalesFlow.Identity.Context;
-using SalesFlow.Identity.Entities;
-using SalesFlow.Identity.Models;
-using SalesFlow.Identity.Services;
 using System.Text;
 
 namespace SalesFlow.Identity

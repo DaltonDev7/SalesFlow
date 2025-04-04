@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SalesFlow.Domain.Common;
 using SalesFlow.Domain.Entities;
 using SalesFlow.Persistence.EntityConfiguration;
@@ -6,7 +8,9 @@ using System.Xml;
 
 namespace SalesFlow.Persistence.Context
 {
-    public class ApplicationContext : DbContext
+    public class ApplicationContext : IdentityDbContext<ApplicationUser, ApplicationUserRol, int,
+    IdentityUserClaim<int>, ApplicationUserRoles, IdentityUserLogin<int>,
+    IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
@@ -40,6 +44,9 @@ namespace SalesFlow.Persistence.Context
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
             modelBuilder.ApplyConfiguration(new RecipeConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            //modelBuilder.ApplyConfiguration(new RolConfiguration());
+            modelBuilder.ApplyConfiguration(new RolesUserConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
