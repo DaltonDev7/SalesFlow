@@ -10,9 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SalesFlow.Application.Interfaces.Common;
 using SalesFlow.Application.Interfaces.Repositories;
-using SalesFlow.Application.Interfaces.Services;
 using SalesFlow.Application.Models;
-using SalesFlow.Application.Services;
 using SalesFlow.Application.Wrappers;
 using SalesFlow.Domain.Entities;
 using SalesFlow.Persistence.Context;
@@ -93,6 +91,9 @@ namespace SalesFlow.Persistence
             services.AddTransient<IRecipeRepository, RecipeRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
         }
 
         private static void ContextConfiguration(IServiceCollection services, IConfiguration configuration)

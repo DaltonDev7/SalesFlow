@@ -11,7 +11,7 @@ namespace SalesFlow.Domain.Entities
         public DateTime DateOrder { get; set; }
         public decimal Total {  get; set; }
         public OrderStatus StatusOrder { get; set; } = OrderStatus.PENDIENTE;
-        public OrderType OrderType { get; set; }
+        public string OrderType { get; set; }
 
 
         // Relación con Customer (Muchos a uno)
