@@ -14,7 +14,7 @@ namespace SalesFlow.Application.Wrappers
         }
         public ApiResponse(string message)
         {
-            Succeeded = false;
+            Succeeded = true;
             Message = message;
         }
         public bool Succeeded { get; set; }

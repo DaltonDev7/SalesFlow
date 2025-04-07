@@ -2,10 +2,10 @@
 
 namespace SalesFlow.Domain.Enums
 {
-    public enum OrderType
+    public static class OrderTypeEnum
     {
-        En_Restaurante,
-        Para_llevar,
-        Domicilio
+        public static string EN_RESTAURANTE = "EN RESTAURANTE";
+        public static string PARA_LLEVAR = "PARA LLEVAR";
+        public static string DOMICILIO = "DOMICILIO";
     }
 }

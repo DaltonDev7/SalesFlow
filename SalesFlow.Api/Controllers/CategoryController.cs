@@ -1,14 +1,14 @@
-﻿using MediatR;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SalesFlow.Application.Feature.Categories.Commands.CreateCategory;
 using SalesFlow.Application.Feature.Categories.Commands.UpdateCategories;
 using SalesFlow.Application.Feature.Categories.Queries;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace SalesFlow.Api.Controllers
 {
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
+    //[Authorize(Roles = "DEVELOPER,ADMINISTRADOR")]
     public class CategoryController : BaseApiController
     {
         [HttpPost]

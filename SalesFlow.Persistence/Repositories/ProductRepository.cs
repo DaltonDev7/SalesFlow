@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SalesFlow.Application.Dtos;
 using SalesFlow.Application.Interfaces.Repositories;
 using SalesFlow.Domain.Entities;
+using SalesFlow.Domain.Enums;
 using SalesFlow.Persistence.Context;
 using SalesFlow.Persistence.Repositories.Generic;
 
@@ -17,17 +18,30 @@ namespace SalesFlow.Persistence.Repositories
 
         public async Task<List<GetProductDto>> GetProducts(Boolean isProduct)
         {
-            return await  _dbContext.Product.Select(p => new GetProductDto
+            // Obtén los productos de la base de datos
+            var products = await _dbContext.Product
+              .Where(p => p.IsIngredient == isProduct) // Aplica el filtro en la consulta
+              .Include(p => p.Category)               // Incluye la relación con Category
+              .Include(p => p.Inventory)              // Incluye la relación con Inventory
+              .Include(p => p.Recipes)                // Incluye la relación con Recipes
+              .Include(p => p.OrderDetails)           // Incluye la relación con OrderDetails
+              .ToListAsync();
+
+            // Mapea los productos a GetProductDto y convierte el ProductType a su nombre
+            var productDtos = products.Select(p => new GetProductDto
             {
                 Available = p.Available,
                 CategoryName = p.Category.Name,
                 Name = p.Name,
                 Description = p.Description,
                 Id = p.Id,
-                IdCategory = p.IdCategory,  
+                IdCategory = p.IdCategory,
                 Price = p.Price,
+                ProductType = Enum.GetName(typeof(ProductTypeEnum), p.ProductType) ?? null,
                 IsIngredient = (bool)p.IsIngredient
-            }).Where(p => p.IsIngredient == isProduct).ToListAsync();
+            }).ToList();
+
+            return productDtos;
         }
     }
 }

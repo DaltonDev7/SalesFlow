@@ -1,7 +1,9 @@
 ﻿
 
 using Microsoft.Extensions.DependencyInjection;
+using SalesFlow.Application.Interfaces.Services;
 using SalesFlow.Application.Mappings;
+using SalesFlow.Application.Services;
 using System.Reflection;
 
 namespace SalesFlow.Application
@@ -17,6 +19,9 @@ namespace SalesFlow.Application
             });
 
             services.AddAutoMapper(typeof(CategoryProfile));
+
+            services.AddTransient<IAuthenticationServices, AuthenticationServices>();
+            services.AddTransient<IRolesServices, RoleServices>();
 
         }
     }

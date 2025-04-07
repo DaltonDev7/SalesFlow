@@ -31,6 +31,11 @@ namespace SalesFlow.Persistence.EntityConfiguration
                    .WithOne(r => r.Product)
                    .HasForeignKey(r => r.IdProduct)
                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(p => p.Category)
+              .WithMany(c => c.Products) // Una categoría tiene muchos productos
+              .HasForeignKey(p => p.IdCategory) // Clave foránea en Product
+              .OnDelete(DeleteBehavior.Restrict); // No permite borrar una categoría si tiene productos
         }
     }
 }

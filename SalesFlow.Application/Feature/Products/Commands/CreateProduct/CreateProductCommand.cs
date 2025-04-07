@@ -16,6 +16,8 @@ namespace SalesFlow.Application.Feature.Products.Commands.CreateProduct
         public decimal Price { get; set; }
         public int IdCategory { get; set; }
 
+        public int ProductType { get; set; }
+
         public Boolean IsIngredient { get; set; }
         public Boolean Available { get; set; }
     }
@@ -39,8 +41,6 @@ namespace SalesFlow.Application.Feature.Products.Commands.CreateProduct
             return new ApiResponse<int>(newProduct.Id);
         }
     }
-
-
 
 
 }
