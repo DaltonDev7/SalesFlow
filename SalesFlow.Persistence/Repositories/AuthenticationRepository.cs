@@ -53,6 +53,7 @@ namespace SalesFlow.Persistence.Repositories
 
                 var userAuth = new GetUserAuth
                 {
+                    Id = user.Id,
                     Email = user.Email,
                     Names = user.Names,
                     LastNames = user.LastNames,

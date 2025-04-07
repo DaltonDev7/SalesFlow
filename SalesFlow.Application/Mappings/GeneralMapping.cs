@@ -11,7 +11,7 @@ namespace SalesFlow.Application.Mappings
     {
         public GeneralMapping()
         {
-            CreateMap<CreateOrdersCommand, Order>();
+            //CreateMap<CreateOrdersCommand, Order>();
             CreateMap<Order, GetOrdersDto>()
              .ReverseMap()
              .ForMember(x => x.LastModified, opt => opt.Ignore())

@@ -1,6 +1,7 @@
 ﻿
 
 using SalesFlow.Domain.Common;
+using SalesFlow.Domain.Enums;
 
 namespace SalesFlow.Domain.Entities
 {
@@ -12,7 +13,7 @@ namespace SalesFlow.Domain.Entities
         public int IdCategory { get; set; }
         public Boolean Available { get; set; }
         public string? ImageUrl { get; set; }
-
+        public ProductTypeEnum? ProductType { get; set; }
         public Boolean? IsIngredient { get; set; }
 
         public Category Category { get; set; }
