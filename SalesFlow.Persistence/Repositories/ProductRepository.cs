@@ -15,6 +15,7 @@ namespace SalesFlow.Persistence.Repositories
         {
         }
 
+       
 
         public async Task<List<GetProductDto>> GetProducts(Boolean isProduct)
         {
@@ -37,7 +38,7 @@ namespace SalesFlow.Persistence.Repositories
                 Id = p.Id,
                 IdCategory = p.IdCategory,
                 Price = p.Price,
-                ProductType = Enum.GetName(typeof(ProductTypeEnum), p.ProductType) ?? null,
+                ProductType = (int?)p.ProductType,
                 IsIngredient = (bool)p.IsIngredient
             }).ToList();
 

@@ -12,7 +12,7 @@ namespace SalesFlow.Application.Interfaces.Repositories
         Task<bool> Exists(Expression<Func<Recipe, bool>> predicate);
 
         Task<List<GetRecipesDto>> GetRecipes();
-
+        Task<List<GetRecipesDto>> GetRecipesByIdProduct(int IdProduct);
 
     }
 }

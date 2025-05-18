@@ -26,10 +26,26 @@ namespace SalesFlow.Persistence.Repositories
                 {
                     Id = r.Id,
                     ProductName = r.Product.Name,
+                    IdProduct = r.Product.Id,
                     IngredientName = r.Ingredient.Name,
                     Amount = r.Amount,
                     UnitMeasurement = r.UnitMeasurement
                 })
+                .ToListAsync();
+        }
+
+        public async Task<List<GetRecipesDto>> GetRecipesByIdProduct(int IdProduct)
+        {
+            return await _dbContext.Recipe
+                .Select(r => new GetRecipesDto
+                {
+                    Id = r.Id,
+                    ProductName = r.Product.Name,
+                    IdProduct = r.Product.Id,
+                    IngredientName = r.Ingredient.Name,
+                    Amount = r.Amount,
+                    UnitMeasurement = r.UnitMeasurement
+                }).Where(p => p.IdProduct == IdProduct)
                 .ToListAsync();
         }
 

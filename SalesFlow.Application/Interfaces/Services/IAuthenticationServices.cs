@@ -8,7 +8,7 @@ namespace SalesFlow.Application.Interfaces.Services
     {
         Task<ApiResponse<string>> RegisterUser(RegisterUser registerUser);
         Task<ApiResponse<List<GetUserAuth>>> GetUsers();
-
+        Task<ApiResponse<AuthenticationResponse>> GetUserByIdAsync(int userId);
         Task<ApiResponse<AuthenticationResponse>> SignIn(SignInRequest request);
     }
 }

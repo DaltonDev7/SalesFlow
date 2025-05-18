@@ -14,6 +14,11 @@ namespace SalesFlow.Application.Services
             _authenticationServices = authenticationServices;
         }
 
+        public async Task<ApiResponse<AuthenticationResponse>> GetUserByIdAsync(int userId)
+        {
+           return await _authenticationServices.GetUserByIdAsync(userId);
+        }
+
         public async Task<ApiResponse<List<GetUserAuth>>> GetUsers()
         {
             return await _authenticationServices.GetUsers();

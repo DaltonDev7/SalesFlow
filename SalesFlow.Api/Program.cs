@@ -8,10 +8,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
+// JSON config
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNamingPolicy = null;
 });
+
+// CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", builder =>
+    {
+        builder.WithOrigins("*")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddPersistenceLayer(builder.Configuration);
@@ -31,6 +46,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Aplicar CORS aquí
+app.UseCors("AllowAngularApp");
+
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseErrorHandlingMiddleware();
 app.MapControllers();

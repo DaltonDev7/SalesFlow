@@ -94,6 +94,8 @@ namespace SalesFlow.Persistence
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IOrderDetailRepository, OrderDetailRepository>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<IPaymentMethodRepository, PaymentMethodRepository>();
+            services.AddTransient<IPaymentsRepository, PaymentsRepository>();
         }
 
         private static void ContextConfiguration(IServiceCollection services, IConfiguration configuration)

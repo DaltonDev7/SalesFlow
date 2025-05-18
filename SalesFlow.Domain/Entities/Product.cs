@@ -1,4 +1,4 @@
-﻿
+﻿ 
 
 using SalesFlow.Domain.Common;
 using SalesFlow.Domain.Enums;

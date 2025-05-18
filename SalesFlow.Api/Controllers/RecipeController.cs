@@ -40,5 +40,15 @@ namespace SalesFlow.Api.Controllers
             return Ok(recipes);
         }
 
+
+        [HttpGet("{idProduct}")]
+        public async Task<IActionResult> GetRecipe(int idProduct)
+        {
+            var query = new GetAllRecipeByIdProductQuery { IdProduct = idProduct };
+            var response = await Mediator.Send(query);
+
+            return Ok(response);
+        }
+
     }
 }

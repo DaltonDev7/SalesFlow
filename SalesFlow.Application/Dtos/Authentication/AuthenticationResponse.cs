@@ -9,6 +9,6 @@ namespace SalesFlow.Application.Dtos.Authentication
         public string Email { get; set; }
         public List<RolDto> Roles { get; set; }
 
-        public string? JWToken { get; set; }
+        public string? JwtToken { get; set; }
     }
 }

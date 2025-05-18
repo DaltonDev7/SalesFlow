@@ -7,6 +7,7 @@ namespace SalesFlow.Domain.Enums
         PENDIENTE,
         PREPARADO,
         ENTREGADO,
+        PAGADO,
         CANCELADO
     }
 }

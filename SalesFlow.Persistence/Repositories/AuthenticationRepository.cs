@@ -42,6 +42,34 @@ namespace SalesFlow.Persistence.Repositories
             _rolesServices = rolesServices;
         }
 
+        public async Task<ApiResponse<AuthenticationResponse>> GetUserByIdAsync(int userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                return new ApiResponse<AuthenticationResponse>()
+                {
+                    Message = "Usuario no encontrado.",
+                    Succeeded = false
+                };
+            }
+
+            var rolesUser = await _rolesServices.GetUserRolesAsync(user.Id);
+
+            AuthenticationResponse response = new()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Names = user.Names,
+                LastNames = user.LastNames,
+                Roles = rolesUser
+            };
+
+            return new ApiResponse<AuthenticationResponse>(response);
+        }
+
+
         public async Task<ApiResponse<List<GetUserAuth>>> GetUsers()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -49,7 +77,7 @@ namespace SalesFlow.Persistence.Repositories
 
             foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(user); // Obtiene los roles del usuario
+                var roles = await _rolesServices.GetUserRolesAsync(user.Id); // Obtiene los roles del usuario
 
                 var userAuth = new GetUserAuth
                 {
@@ -60,7 +88,7 @@ namespace SalesFlow.Persistence.Repositories
                     Gender = user.Gender,
                     PhoneNumber = user.PhoneNumber,
                     Status = user.Status,
-                    Roles = roles.Select(roleName => new RolDto { Name = roleName }).ToList()
+                    Roles = roles
                 };
 
                 userAuthList.Add(userAuth);
@@ -156,7 +184,7 @@ namespace SalesFlow.Persistence.Repositories
 
             // Generar JWT
             JwtSecurityToken jwtSecurityToken = await GetSecurityToken(user);
-            response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            response.JwtToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
 
             var rolesUser = await _rolesServices.GetUserRolesAsync(user.Id);
@@ -188,6 +216,7 @@ namespace SalesFlow.Persistence.Repositories
 
             var claims = new[]
             {
+                  new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub,user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email,user.Email)
