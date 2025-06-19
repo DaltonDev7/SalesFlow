@@ -48,6 +48,7 @@ app.UseHttpsRedirection();
 
 // Aplicar CORS aquí
 app.UseCors("AllowAngularApp");
+app.UseStaticFiles(); // Para servir archivos en wwwroot
 
 app.UseAuthentication();
 app.UseAuthorization();

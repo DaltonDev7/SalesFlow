@@ -10,7 +10,7 @@ namespace SalesFlow.Domain.Entities
         public int IdEmploye { get; set; }
         public DateTime DateOrder { get; set; }
         public decimal Total {  get; set; }
-        public OrderStatus StatusOrder { get; set; } = OrderStatus.PENDIENTE;
+        public OrderStatus StatusOrder { get; set; }
         public string OrderType { get; set; }
 
 

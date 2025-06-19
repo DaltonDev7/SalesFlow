@@ -54,30 +54,30 @@ namespace SalesFlow.Persistence
 
                 options.Events = new JwtBearerEvents()
                 {
-                    OnAuthenticationFailed = c =>
+                    OnAuthenticationFailed = async context =>
                     {
-                        c.NoResult();
-                        c.Response.StatusCode = 500;
-                        c.Response.ContentType = "text/plain";
-                        return c.Response.WriteAsync(c.Exception.ToString());
-                    },
-                    //Por diablo entra aqui
-                    OnChallenge = c =>
-                    {
-                        c.HandleResponse();
-                        c.Response.StatusCode = 401;
-                        c.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new ApiResponse<string>("You are not Authrize"));
-                        return c.Response.WriteAsync(result);
-                    },
-                    OnForbidden = c =>
-                    {
-                        c.Response.StatusCode = 403;
-                        c.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new ApiResponse<string>("You are not Authrize to access this resource"));
-                        return c.Response.WriteAsync(result);
+                        context.NoResult();
+                        context.Response.StatusCode = 500;
+                        context.Response.ContentType = "text/plain";
+                        await context.Response.WriteAsync(context.Exception.ToString());
                     },
 
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse();
+                        context.Response.StatusCode = 401;
+                        context.Response.ContentType = "application/json";
+                        var result = JsonConvert.SerializeObject(new ApiResponse<string>("You are not Authorized"));
+                        await context.Response.WriteAsync(result);
+                    },
+
+                    OnForbidden = async context =>
+                    {
+                        context.Response.StatusCode = 403;
+                        context.Response.ContentType = "application/json";
+                        var result = JsonConvert.SerializeObject(new ApiResponse<string>("You are not Authorized to access this resource"));
+                        await context.Response.WriteAsync(result);
+                    }
                 };
             });
 

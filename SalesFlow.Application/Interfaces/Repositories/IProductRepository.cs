@@ -9,5 +9,6 @@ namespace SalesFlow.Application.Interfaces.Repositories
     public interface IProductRepository : IBaseRepository<Product>
     {
         Task<List<GetProductDto>> GetProducts(Boolean isProduct);
+        Task<List<GetProductDto>> GetProductsSimple();
     }
 }

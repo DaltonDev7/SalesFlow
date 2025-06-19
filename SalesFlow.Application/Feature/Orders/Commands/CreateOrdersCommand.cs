@@ -14,7 +14,7 @@ namespace SalesFlow.Application.Feature.Orders.Commands
         public int IdEmploye { get; set; }
         public DateTime DateOrder { get; set; }
         public decimal Total { get; set; }
-        public OrderStatus StatusOrder { get; set; } = OrderStatus.PENDIENTE;
+        public OrderStatus StatusOrder { get; set; }
         public string OrderType { get; set; }
 
         // Agregar una lista de detalles de la orden
@@ -26,6 +26,7 @@ namespace SalesFlow.Application.Feature.Orders.Commands
         public int IdProduct { get; set; }
         public int Amount { get; set; }
         public decimal UnitPrice { get; set; }
+        public decimal SubTotal { get; set; }
     }
 
 
@@ -58,7 +59,7 @@ namespace SalesFlow.Application.Feature.Orders.Commands
         {
             var newOrder = new Order();
             newOrder.StatusOrder = command.StatusOrder;
-            newOrder.DateOrder = command.DateOrder;
+            newOrder.DateOrder = DateTime.Now;
             newOrder.IdCustomer = command.IdCustomer;
             newOrder.IdEmploye = command.IdEmploye;
             newOrder.OrderType = command.OrderType;

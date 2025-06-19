@@ -15,7 +15,35 @@ namespace SalesFlow.Persistence.Repositories
         {
         }
 
-       
+
+        public async Task<List<GetProductDto>> GetProductsSimple()
+        {
+            // Obtén los productos de la base de datos
+            var products = await _dbContext.Product
+              .Where(p => p.ProductType == ProductTypeEnum.Simple) // Aplica el filtro en la consulta
+              .Include(p => p.Category)               // Incluye la relación con Category
+              .Include(p => p.Inventory)              // Incluye la relación con Inventory
+              .Include(p => p.Recipes)                // Incluye la relación con Recipes
+              .Include(p => p.OrderDetails)           // Incluye la relación con OrderDetails
+              .ToListAsync();
+
+            // Mapea los productos a GetProductDto y convierte el ProductType a su nombre
+            var productDtos = products.Select(p => new GetProductDto
+            {
+                Available = p.Available,
+                CategoryName = p.Category.Name,
+                Name = p.Name,
+                Description = p.Description,
+                Id = p.Id,
+                IdCategory = p.IdCategory,
+                Price = p.Price,
+                ProductType = (int?)p.ProductType,
+                IsIngredient = (bool)p.IsIngredient
+            }).ToList();
+
+            return productDtos;
+        }
+
 
         public async Task<List<GetProductDto>> GetProducts(Boolean isProduct)
         {
@@ -34,6 +62,7 @@ namespace SalesFlow.Persistence.Repositories
                 Available = p.Available,
                 CategoryName = p.Category.Name,
                 Name = p.Name,
+                ImageUrl = p.ImageUrl,
                 Description = p.Description,
                 Id = p.Id,
                 IdCategory = p.IdCategory,

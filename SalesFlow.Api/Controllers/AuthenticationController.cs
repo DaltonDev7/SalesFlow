@@ -59,6 +59,20 @@ namespace SalesFlow.Api.Controllers
            
         }
 
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _authenticationServices.UpdateUser(updateUser);
+            return Ok(result);
+
+        }
+
+
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn([FromBody] SignInRequest signInRequest)
         {

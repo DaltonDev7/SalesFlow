@@ -22,6 +22,11 @@ namespace SalesFlow.Application.Services
         public async Task<ApiResponse<List<GetUserAuth>>> GetUsers()
         {
             return await _authenticationServices.GetUsers();
+        }  
+        
+        public async Task<ApiResponse<string>> UpdateUser(UpdateUserDto updateUser)
+        {
+            return await _authenticationServices.UpdateUser(updateUser);
         }
 
         public async Task<ApiResponse<string>> RegisterUser(RegisterUser registerUser)

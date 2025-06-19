@@ -28,6 +28,7 @@ namespace SalesFlow.Persistence.Repositories
                     ProductName = r.Product.Name,
                     IdProduct = r.Product.Id,
                     IngredientName = r.Ingredient.Name,
+                    IdIngredient = r.Ingredient.Id,
                     Amount = r.Amount,
                     UnitMeasurement = r.UnitMeasurement
                 })
@@ -43,6 +44,7 @@ namespace SalesFlow.Persistence.Repositories
                     ProductName = r.Product.Name,
                     IdProduct = r.Product.Id,
                     IngredientName = r.Ingredient.Name,
+                    IdIngredient = r.Ingredient.Id,
                     Amount = r.Amount,
                     UnitMeasurement = r.UnitMeasurement
                 }).Where(p => p.IdProduct == IdProduct)

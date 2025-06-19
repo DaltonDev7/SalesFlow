@@ -10,5 +10,7 @@ namespace SalesFlow.Application.Interfaces.Repositories
     {
 
         Task<List<GetOrdersDto>> GetOrders();
+        Task<decimal> GetTodayPaymentsAsync();
+        Task<decimal> GetTodayRevenueAsync();
     }
 }

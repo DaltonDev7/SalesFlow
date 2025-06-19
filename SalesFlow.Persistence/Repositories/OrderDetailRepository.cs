@@ -21,6 +21,7 @@ namespace SalesFlow.Persistence.Repositories
             {
                 Id = x.Id,
                 IdOrder = x.IdOrder,
+                IdProduct = x.Product.Id,
                 Amount = x.Amount,
                 UnitPrice = x.UnitPrice,
                 SubTotal = x.SubTotal,

@@ -15,6 +15,7 @@ namespace SalesFlow.Application.Feature.Products.Commands.CreateProduct
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int IdCategory { get; set; }
+        public string? ImageUrl { get; set; }
 
         public int ProductType { get; set; }
 

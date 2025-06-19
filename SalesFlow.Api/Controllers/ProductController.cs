@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SalesFlow.Api.Dto;
 using SalesFlow.Application.Feature.Products.Commands;
 using SalesFlow.Application.Feature.Products.Commands.CreateProduct;
 using SalesFlow.Application.Feature.Products.Queries;
@@ -28,6 +29,14 @@ namespace SalesFlow.Api.Controllers
         public async Task<IActionResult> GetProductCompose()
         {
             return Ok(await Mediator.Send(new GetAllProductQuery()));
+        }   
+        
+        
+        [HttpGet]
+        [Route("GetProductSimple")]
+        public async Task<IActionResult> GetProductSimple()
+        {
+            return Ok(await Mediator.Send(new GetAllIProductSimple()));
         }
 
         [HttpGet]
@@ -44,6 +53,33 @@ namespace SalesFlow.Api.Controllers
             var result = await Mediator.Send(command);
             return Ok(result);
         }
+
+
+        [HttpPost("upload-image")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadImage([FromForm] UploadImageRequest request)
+        {
+            if (request.File == null || request.File.Length == 0)
+                return BadRequest("No se recibió ninguna imagen.");
+
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "products");
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(request.File.FileName);
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await request.File.CopyToAsync(stream);
+            }
+
+            var imageUrl = $"/images/products/{fileName}";
+
+            return Ok(new { imageUrl });
+        }
+
+
 
     }
 }

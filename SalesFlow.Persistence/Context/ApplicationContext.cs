@@ -47,6 +47,7 @@ namespace SalesFlow.Persistence.Context
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             //modelBuilder.ApplyConfiguration(new RolConfiguration());
             modelBuilder.ApplyConfiguration(new RolesUserConfiguration());
+            modelBuilder.ApplyConfiguration(new TableConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -60,6 +61,7 @@ namespace SalesFlow.Persistence.Context
         public DbSet<Payments> Payments { get; set; }
         public DbSet<Recipe> Recipe { get; set; }
         public DbSet<Customer> Customer { get; set; }
+        public DbSet<Tables> Tables { get; set; }
 
     }
 }

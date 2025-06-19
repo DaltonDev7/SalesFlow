@@ -8,10 +8,13 @@ namespace SalesFlow.Application.Dtos
     {
         public int Id { get; set; }
         public string CustomerName { get; set; }
+
+        public int IdCustomer { get; set; }
         public string EmployeName { get; set; }
         public DateTime DateOrder { get; set; }
         public decimal Total { get; set; }
-        public string StatusOrder { get; set; }
+        public int StatusOrder { get; set; }
         public string OrderType { get; set; }
+
     }
 }

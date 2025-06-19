@@ -10,5 +10,7 @@ namespace SalesFlow.Application.Interfaces.Services
         Task<ApiResponse<List<GetUserAuth>>> GetUsers();
         Task<ApiResponse<AuthenticationResponse>> GetUserByIdAsync(int userId);
         Task<ApiResponse<AuthenticationResponse>> SignIn(SignInRequest request);
+
+        Task<ApiResponse<string>> UpdateUser(UpdateUserDto updateUser);
     }
 }

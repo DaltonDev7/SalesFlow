@@ -18,6 +18,10 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 
+
+
+
+
 namespace SalesFlow.Persistence.Repositories
 {
     public class AuthenticationRepository : IAuthenticationRepository
@@ -96,6 +100,78 @@ namespace SalesFlow.Persistence.Repositories
 
             return new ApiResponse<List<GetUserAuth>>(userAuthList);
         }
+
+        public async Task<ApiResponse<string>> UpdateUser(UpdateUserDto updateUser)
+        {
+            var user = await _userManager.FindByIdAsync(updateUser.Id.ToString());
+            if (user == null)
+            {
+                return new ApiResponse<string>
+                {
+                    Message = "Usuario no encontrado.",
+                    Succeeded = false
+                };
+            }
+
+            // Verificar si el correo ha cambiado y si ya está en uso
+            if (user.Email != updateUser.Email)
+            {
+                var emailExists = await _userManager.FindByEmailAsync(updateUser.Email);
+                if (emailExists != null)
+                {
+                    return new ApiResponse<string>
+                    {
+                        Message = "Ya existe un usuario con ese correo.",
+                        Succeeded = false
+                    };
+                }
+            }
+
+            // Actualizar campos
+            user.Email = updateUser.Email;
+            user.UserName = updateUser.Names + updateUser.LastNames;
+            user.PhoneNumber = updateUser.PhoneNumber;
+            user.Names = updateUser.Names;
+            user.LastNames = updateUser.LastNames;
+            user.Gender = updateUser.Gender;
+            user.Status = updateUser.Status;
+            user.LastModified = DateTime.UtcNow;
+
+            // Guardar cambios
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                return new ApiResponse<string>
+                {
+                    Message = $"Error al actualizar usuario: {errors}",
+                    Succeeded = false
+                };
+            }
+
+            // Actualizar rol
+            var role = await _identityContext.Roles.FindAsync(updateUser.IdRol);
+            if (role == null)
+            {
+                return new ApiResponse<string>
+                {
+                    Message = "El rol especificado no existe.",
+                    Succeeded = false
+                };
+            }
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            var addRoleResult = await _userManager.AddToRoleAsync(user, role.Name);
+
+            if (!addRoleResult.Succeeded)
+            {
+                return new ApiResponse<string>("Usuario actualizado pero ocurrió un error al asignar el rol.");
+            }
+
+            return new ApiResponse<string>("Usuario actualizado correctamente.");
+        }
+
 
         public async Task<ApiResponse<string>> RegisterUser(RegisterUser registerUser)
         {

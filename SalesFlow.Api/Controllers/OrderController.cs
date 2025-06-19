@@ -34,11 +34,19 @@ namespace SalesFlow.Api.Controllers
         }
 
         // Actualizar el estado de un pedido
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateOrderStatusCommand command)
+        [HttpPut("updateStatusOrder")]
+        public async Task<IActionResult> UpdateStatus([FromBody] UpdateOrderStatusCommand command)
         {
             var result = await Mediator.Send(command);
             return Ok(result);
         }
+
+       [HttpPut]
+        public async Task<IActionResult> UpdateOrder([FromBody] UpdateOrderCommand command)
+        {
+            var result = await Mediator.Send(command);
+            return Ok(result);
+        }
+
     }
 }

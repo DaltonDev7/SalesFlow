@@ -21,7 +21,10 @@ namespace SalesFlow.Application
             services.AddAutoMapper(typeof(CategoryProfile));
 
             services.AddTransient<IAuthenticationServices, AuthenticationServices>();
+            services.AddTransient<IReporterServices, ReporterServices>();
             services.AddTransient<IRolesServices, RoleServices>();
+            services.AddTransient<IPaymentServices, PaymentServices>();
+           
 
         }
     }

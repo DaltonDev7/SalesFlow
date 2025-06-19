@@ -14,6 +14,7 @@ namespace SalesFlow.Application.Feature.Products.Commands
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string? ImageUrl { get; set; }
         public decimal Price { get; set; }
         public int IdCategory { get; set; }
         public Boolean Available { get; set; }
@@ -41,6 +42,7 @@ namespace SalesFlow.Application.Feature.Products.Commands
             existingData.Description = request.Description;
             existingData.Price = request.Price;
             existingData.Available = request.Available;
+            existingData.ImageUrl = request.ImageUrl;
             existingData.IdCategory = request.IdCategory;
 
             // Guardar cambios en el repositorio

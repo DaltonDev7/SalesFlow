@@ -10,7 +10,7 @@ namespace SalesFlow.Application.Interfaces.Repositories
         Task<ApiResponse<string>> RegisterUser(RegisterUser registerUser);
         Task<ApiResponse<List<GetUserAuth>>> GetUsers();
         Task<ApiResponse<AuthenticationResponse>> GetUserByIdAsync(int userId);
-
+        Task<ApiResponse<string>> UpdateUser(UpdateUserDto updateUser);
         Task<ApiResponse<AuthenticationResponse>> SignIn(SignInRequest request);
     }
 }
