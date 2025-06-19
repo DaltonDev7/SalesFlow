@@ -1,4 +1,5 @@
-﻿using SalesFlow.Application.Wrappers;
+﻿using SalesFlow.Application.Dtos;
+using SalesFlow.Application.Wrappers;
 
 namespace SalesFlow.Application.Interfaces.Services
 {
@@ -6,6 +7,10 @@ namespace SalesFlow.Application.Interfaces.Services
     {
         Task<ApiResponse<decimal>> GetTodayRevenueAsync();
 
-        Task<ApiResponse<decimal>> GetTodayPaymentsAsync();
+        Task<ApiResponse<ReporteToday>> GetTodayPaymentsAsync();
+
+        Task<ApiResponse<List<CategorySalesDto>>> GetSalesByCategoryAsync(DateTime? date = null);
+
+        Task<ApiResponse<List<ProductSalesDto>>> GetSalesByProductAsync(DateTime? date = null);
     }
 }

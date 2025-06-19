@@ -95,6 +95,7 @@ namespace SalesFlow.Persistence
             services.AddTransient<IOrderDetailRepository, OrderDetailRepository>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IPaymentMethodRepository, PaymentMethodRepository>();
+            services.AddTransient<IHistoryOrderRepository, HistoryOrderRepository>();
             services.AddTransient<IPaymentsRepository, PaymentsRepository>();
         }
 

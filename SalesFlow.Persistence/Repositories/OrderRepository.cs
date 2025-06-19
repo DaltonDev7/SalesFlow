@@ -59,17 +59,67 @@ namespace SalesFlow.Persistence.Repositories
             return totalSales;
         }
 
-        public async Task<decimal> GetTodayPaymentsAsync()
+        public async Task<ReporteToday> GetTodayPaymentsAsync()
         {
             var today = DateTime.Today;
             var tomorrow = today.AddDays(1);
 
-            var totalPayments = await _dbContext.Payments
-                .Where(p => p.Created >= today && p.Created < tomorrow)
-                .SumAsync(p => (decimal?)p.AmountPaid) ?? 0;
+            var paymentsToday = _dbContext.Payments
+                .Where(p => p.Created >= today && p.Created < tomorrow);
 
-            return totalPayments;
+            var totalPayments = await paymentsToday.SumAsync(p => (decimal?)p.AmountPaid) ?? 0;
+            var paymentCount = await paymentsToday.CountAsync();
+
+            return new ReporteToday
+            {
+                totalPayments = totalPayments,
+                paymentCount = paymentCount
+            };
         }
+
+        public async Task<List<CategorySalesDto>> GetTodaySalesByCategoryAsync(DateTime? date = null)
+        {
+            var targetDate = date?.Date ?? DateTime.Today;
+            var nextDate = targetDate.AddDays(1);
+
+            return await _dbContext.OrderDetail
+                .Where(od => od.Order.DateOrder >= targetDate && od.Order.DateOrder < nextDate)
+                .GroupBy(od => new
+                {
+                    od.Product.Category.Id,
+                    od.Product.Category.Name
+                })
+                .Select(g => new CategorySalesDto
+                {
+                    CategoryId = g.Key.Id,
+                    CategoryName = g.Key.Name,
+                    TotalSales = g.Sum(x => x.SubTotal),
+                    TotalItemsSold = g.Sum(x => x.Amount)
+                })
+                .OrderByDescending(x => x.TotalSales)
+                .ToListAsync();
+        }
+
+        public async Task<List<ProductSalesDto>> GetTodaySalesByProductAsync(DateTime? date = null)
+        {
+            var targetDate = date?.Date ?? DateTime.Today;
+            var nextDate = targetDate.AddDays(1);
+
+            return await _dbContext.OrderDetail
+                .Where(od => od.Order.DateOrder >= targetDate && od.Order.DateOrder < nextDate)
+                .GroupBy(od => od.Product.Name)
+                .Select(g => new ProductSalesDto
+                {
+                    ProductName = g.Key,
+                    CantidadVendidas = g.Sum(x => x.Amount)
+                })
+                .OrderByDescending(x => x.CantidadVendidas)
+                .ToListAsync();
+        }
+
+
+
+
 
 
 
