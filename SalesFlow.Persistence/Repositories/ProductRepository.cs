@@ -73,5 +73,48 @@ namespace SalesFlow.Persistence.Repositories
 
             return productDtos;
         }
+
+
+       public async Task<List<GetProductDto>> GetProductsByCategoryAsync(int categoryId)
+        {
+
+            if(categoryId == 0)
+            {
+                return await _dbContext.Product
+                .Where(p => p.IsIngredient == false)
+                .Select(p => new GetProductDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl,
+                    IdCategory = p.IdCategory
+                })
+                .ToListAsync();
+            }
+            else
+            {
+
+            var products = await _dbContext.Product
+                .Where(p => p.IdCategory == categoryId && p.IsIngredient == false)
+                .Select(p => new GetProductDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl,
+                    IdCategory = p.IdCategory
+                })
+                .ToListAsync();
+
+            return products;
+            }
+
+        }
+
+
+
     }
 }

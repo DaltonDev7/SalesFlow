@@ -25,6 +25,7 @@ namespace SalesFlow.Application
             services.AddTransient<IRolesServices, RoleServices>();
             services.AddTransient<IPaymentServices, PaymentServices>();
             services.AddTransient<IHistoryOrdersServices, HistoryOrdersServices>();
+            services.AddTransient<IProductServices, ProductServices>();
            
 
         }

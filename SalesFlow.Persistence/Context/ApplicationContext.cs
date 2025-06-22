@@ -49,11 +49,13 @@ namespace SalesFlow.Persistence.Context
             modelBuilder.ApplyConfiguration(new RolesUserConfiguration());
             modelBuilder.ApplyConfiguration(new TableConfiguration());
             modelBuilder.ApplyConfiguration(new HistoryOrdersConfiguration());
+            modelBuilder.ApplyConfiguration(new ReservationsConfigurations());
 
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Category> Category { get; set; }
+        public DbSet<Reservations> Reservations { get; set; }
         public DbSet<HistoryOrders> HistoryOrder { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<Inventory> Inventory { get; set; }

@@ -3,6 +3,7 @@ using SalesFlow.Api.Dto;
 using SalesFlow.Application.Feature.Products.Commands;
 using SalesFlow.Application.Feature.Products.Commands.CreateProduct;
 using SalesFlow.Application.Feature.Products.Queries;
+using SalesFlow.Application.Interfaces.Services;
 
 namespace SalesFlow.Api.Controllers
 {
@@ -10,6 +11,14 @@ namespace SalesFlow.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public class ProductController : BaseApiController
     {
+
+        private readonly IProductServices _services;
+
+        public ProductController(IProductServices services)
+        {
+            _services = services;
+        }
+
         [HttpPost]
         public async Task<IActionResult> Add(CreateProductCommand command)
         {
@@ -53,6 +62,14 @@ namespace SalesFlow.Api.Controllers
             var result = await Mediator.Send(command);
             return Ok(result);
         }
+
+        [HttpGet("GetByCategory/{categoryId}")]
+        public async Task<IActionResult> GetByCategory(int categoryId)
+        {
+            var response = await _services.GetProductsByCategoryAsync(categoryId);
+            return Ok(response);
+        }
+
 
 
         [HttpPost("upload-image")]

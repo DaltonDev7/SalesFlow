@@ -10,5 +10,7 @@ namespace SalesFlow.Application.Interfaces.Repositories
     {
         Task<List<GetProductDto>> GetProducts(Boolean isProduct);
         Task<List<GetProductDto>> GetProductsSimple();
+
+        Task<List<GetProductDto>> GetProductsByCategoryAsync(int categoryId);
     }
 }
