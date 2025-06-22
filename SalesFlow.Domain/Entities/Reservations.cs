@@ -14,5 +14,10 @@ namespace SalesFlow.Domain.Entities
         public TimeOnly EndTime { get; set; }          // Hora de fin
 
         public string StatusReservation { get; set;}
+
+        // Relaciones
+        public virtual ApplicationUser Customer { get; set; }
+        public virtual Tables Table { get; set; }
+
     }
 }

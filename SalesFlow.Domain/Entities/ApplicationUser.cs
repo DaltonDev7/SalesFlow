@@ -17,6 +17,8 @@ namespace SalesFlow.Domain.Entities
         public DateTime? LastModified { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+        public virtual ICollection<Reservations> Reservations { get; set; } = new List<Reservations>();
     }
 
 }

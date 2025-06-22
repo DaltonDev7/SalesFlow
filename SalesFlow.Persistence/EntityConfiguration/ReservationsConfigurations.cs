@@ -11,6 +11,18 @@ namespace SalesFlow.Persistence.EntityConfiguration
         {
             builder.HasKey(x => x.Id);
             builder.ToTable("Reservations");
+
+        
+            builder.HasOne(r => r.Table)
+                   .WithMany(p => p.Reservations)
+                   .HasForeignKey(r => r.IdTable)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+
+            builder.HasOne(r => r.Customer)
+                  .WithMany(p => p.Reservations)
+                  .HasForeignKey(r => r.IdCustomer)
+                   .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
