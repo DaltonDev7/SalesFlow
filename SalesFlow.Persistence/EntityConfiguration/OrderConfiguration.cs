@@ -17,16 +17,16 @@ namespace SalesFlow.Persistence.EntityConfiguration
             builder.Property(x => x.Total)
                    .HasColumnType("decimal(10,2)");
 
-   
             builder.HasOne(o => o.Customer)
-                   .WithMany(c => c.Orders)
-                   .HasForeignKey(o => o.IdCustomer)
-                   .OnDelete(DeleteBehavior.Cascade);
+                .WithMany(c => c.CustomerOrders)
+                .HasForeignKey(o => o.IdCustomer)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(o => o.User)
-                 .WithMany(c => c.Orders)
-                 .HasForeignKey(o => o.IdEmploye)
-                 .OnDelete(DeleteBehavior.Cascade);
+                   .WithMany(e => e.EmployeeOrders)
+                   .HasForeignKey(o => o.IdEmploye)
+                   .OnDelete(DeleteBehavior.Restrict);
+
 
         }
     }

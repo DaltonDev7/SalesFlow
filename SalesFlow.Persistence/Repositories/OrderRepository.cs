@@ -14,22 +14,21 @@ namespace SalesFlow.Persistence.Repositories
         public OrderRepository(ApplicationContext dbContext) : base(dbContext)
         {
         }
-
         public async Task<List<GetOrdersDto>> GetOrders()
         {
-
             var rawOrders = await _dbContext.Order
-             .Select(x => new {
-                 x.Id,
-                 CustomerName = x.Customer.Name,
-                 IdCustomer = x.Customer.Id,
-                 x.DateOrder,
-                 EmployeName = x.User.Names + " " + x.User.LastNames,
-                 x.OrderType,
-                 x.StatusOrder,
-                 x.Total
-             })
-             .ToListAsync();
+                .OrderByDescending(x => x.DateOrder) // 🔁 Ordena por fecha descendente
+                .Select(x => new {
+                    x.Id,
+                    CustomerName = x.Customer.Names,
+                    IdCustomer = x.Customer.Id,
+                    x.DateOrder,
+                    EmployeName = x.User.Names + " " + x.User.LastNames,
+                    x.OrderType,
+                    x.StatusOrder,
+                    x.Total
+                })
+                .ToListAsync();
 
             var result = rawOrders.Select(x => new GetOrdersDto
             {
@@ -44,7 +43,6 @@ namespace SalesFlow.Persistence.Repositories
             }).ToList();
 
             return result;
-
         }
 
 

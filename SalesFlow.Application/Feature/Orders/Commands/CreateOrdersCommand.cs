@@ -1,14 +1,16 @@
 ﻿
 using AutoMapper;
 using MediatR;
+using SalesFlow.Application.Exception;
 using SalesFlow.Application.Interfaces.Repositories;
 using SalesFlow.Application.Wrappers;
 using SalesFlow.Domain.Entities;
 using SalesFlow.Domain.Enums;
+using System.Net;
 
 namespace SalesFlow.Application.Feature.Orders.Commands
 {
-    public class CreateOrdersCommand : IRequest<ApiResponse<string>>
+    public class CreateOrdersCommand : IRequest<ApiResponse<int>>
     {
         public int IdCustomer { get; set; }
         public int IdEmploye { get; set; }
@@ -30,7 +32,7 @@ namespace SalesFlow.Application.Feature.Orders.Commands
     }
 
 
-    public class CreateOrderCommandHandler : IRequestHandler<CreateOrdersCommand, ApiResponse<string>>
+    public class CreateOrderCommandHandler : IRequestHandler<CreateOrdersCommand, ApiResponse<int>>
     {
         private readonly IOrderRepository _repository;
         private readonly IOrderDetailRepository _orderDetailRepository;
@@ -55,7 +57,7 @@ namespace SalesFlow.Application.Feature.Orders.Commands
             _mapper = mapper;
         }
 
-        public async Task<ApiResponse<string>> Handle(CreateOrdersCommand command, CancellationToken cancellationToken)
+        public async Task<ApiResponse<int>> Handle(CreateOrdersCommand command, CancellationToken cancellationToken)
         {
             var newOrder = new Order();
             newOrder.StatusOrder = command.StatusOrder;
@@ -65,7 +67,17 @@ namespace SalesFlow.Application.Feature.Orders.Commands
             newOrder.OrderType = command.OrderType;
             newOrder.Total = 0; // Inicializamos el total
 
-            await _repository.InsertAndSave(newOrder);
+            try
+            {
+               await _repository.InsertAndSave(newOrder);
+            }
+            catch (System.Exception error)
+            {
+
+               Console.WriteLine(error);
+            }
+
+           
 
             decimal totalOrder = 0;
 
@@ -73,7 +85,7 @@ namespace SalesFlow.Application.Feature.Orders.Commands
             {
                 var product = await _productRepository.Get(x => x.Id == detail.IdProduct);
                 if (product == null)
-                    return new ApiResponse<string>()
+                    return new ApiResponse<int>()
                     {
                         Message = "Producto no encontrado.",
                         Succeeded = false
@@ -104,22 +116,16 @@ namespace SalesFlow.Application.Feature.Orders.Commands
                         var ingredientInventory = await _inventoryRepository.Get(i => i.IdProduct == recipe.IdIngredient);
                         if (ingredientInventory == null)
                         {
-                            return new ApiResponse<string>
-                            {
-                                Message = $"No hay inventario para el ingrediente requerido del producto {product.Name}.",
-                                Succeeded = false
-                            };
+                            throw new ApiException($"No hay inventario para el ingrediente requerido del producto {product.Name}", (int)HttpStatusCode.InternalServerError);
+                           
                         }
 
                         var requiredAmount = recipe.Amount * detail.Amount;
 
                         if (ingredientInventory.AvailableQuantity < requiredAmount)
                         {
-                            return new ApiResponse<string>
-                            {
-                                Message = $"Inventario insuficiente para el ingrediente {ingredientInventory.Product.Name}.",
-                                Succeeded = false
-                            };
+                            throw new ApiException($"Inventario insuficiente para el ingrediente {product.Name}.", (int)HttpStatusCode.InternalServerError);
+
                         }
 
                         ingredientInventory.AvailableQuantity -= requiredAmount;
@@ -132,18 +138,11 @@ namespace SalesFlow.Application.Feature.Orders.Commands
                     // Producto simple, descontar directamente del inventario
                     var inventory = await _inventoryRepository.Get(i => i.IdProduct == detail.IdProduct);
                     if (inventory == null)
-                        return new ApiResponse<string>()
-                        {
-                            Message = $"No hay inventario registrado para el producto {product.Name}",
-                            Succeeded = false
-                        };
+                        throw new ApiException($"No hay inventario registrado para el producto {product.Name}", (int)HttpStatusCode.InternalServerError);
 
                     if (inventory.AvailableQuantity < detail.Amount)
-                        return new ApiResponse<string>()
-                        {
-                            Message = $"Inventario insuficiente para el producto {product.Name}",
-                            Succeeded = false
-                        };
+                        throw new ApiException($"Inventario insuficiente para el producto {product.Name}", (int)HttpStatusCode.InternalServerError);
+                  
 
                     inventory.AvailableQuantity -= detail.Amount;
                     inventory.DateUpdate = DateTime.UtcNow;
@@ -154,7 +153,7 @@ namespace SalesFlow.Application.Feature.Orders.Commands
             newOrder.Total = totalOrder;
             await _repository.UpdateAndSave(newOrder); // Actualiza el total en la orden
 
-            return new ApiResponse<string>("Orden registrada correctamente");
+            return new ApiResponse<int>(newOrder.Id, "Orden registrada correctamente");
         }
     }
 

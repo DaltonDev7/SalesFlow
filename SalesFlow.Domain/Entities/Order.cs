@@ -15,7 +15,7 @@ namespace SalesFlow.Domain.Entities
 
 
         // Relación con Customer (Muchos a uno)
-        public virtual Customer Customer { get; set; }
+        public virtual ApplicationUser Customer { get; set; }
         public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();

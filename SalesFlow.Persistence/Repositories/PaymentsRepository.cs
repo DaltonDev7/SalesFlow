@@ -29,7 +29,7 @@ namespace SalesFlow.Persistence.Repositories
                AmountPaid = p.AmountPaid,
                IdOrder = p.IdOrder,
                PaymentDate = p.PaymentDate,
-               CustomerName = p.Order.Customer.Name,
+               CustomerName = p.Order.Customer.Names,
                EmployeName = p.Order.User.Names,
                OrderType = p.Order.OrderType
             }).ToListAsync();
