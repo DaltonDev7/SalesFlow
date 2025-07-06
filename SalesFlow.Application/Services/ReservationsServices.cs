@@ -23,14 +23,49 @@ namespace SalesFlow.Application.Services
             this.reservationRepository = reservationRepository;
         }
 
-        public async Task<ApiResponse<List<GetReservationsDto>>> GetReservations()
+        public async Task<ApiResponse<List<GetReservationsDto>>> GetReservationsByDate(DateTime date)
         {
-            var reservations = await reservationRepository.GetReservations();
+            var reservations = await reservationRepository.GetReservationsByDate(date);
+            return new ApiResponse<List<GetReservationsDto>>(reservations);
+        }  
+        
+        public async Task<ApiResponse<List<GetReservationsDto>>> GetReservationsByCustomerId(int customerId)
+        {
+            var reservations = await reservationRepository.GetReservationsByCustomerId(customerId);
             return new ApiResponse<List<GetReservationsDto>>(reservations);
         }
 
         public async Task<ApiResponse<string>> Add(AddEditReservations dto)
         {
+            // Validación: fecha pasada
+            if (dto.DateReservation.Date < DateTime.Now.Date)
+            {
+                throw new ApiException("No se puede hacer una reservación en una fecha pasada.");
+            }
+
+            // Validación: hora inválida
+            if (dto.StartTime >= dto.EndTime)
+            {
+                throw new ApiException("La hora de inicio debe ser menor que la hora de fin.");
+            }
+
+            // Validación: ya existe una reservación para la misma mesa en el mismo horario
+            var reservasExistentes = await reservationRepository.GetAll(r =>
+                r.IdTable == dto.IdTable &&
+                r.DateReservation == dto.DateReservation &&
+                (
+                    (dto.StartTime >= r.StartTime && dto.StartTime < r.EndTime) ||
+                    (dto.EndTime > r.StartTime && dto.EndTime <= r.EndTime) ||
+                    (dto.StartTime <= r.StartTime && dto.EndTime >= r.EndTime)
+                )
+            );
+
+            if (reservasExistentes.Any())
+            {
+                throw new ApiException("Ya existe una reservación para esta mesa en ese horario.");
+            }
+
+            // Guardar la reservación
             var reservation = new Reservations
             {
                 IdCustomer = dto.IdCustomer,
@@ -44,6 +79,7 @@ namespace SalesFlow.Application.Services
             await reservationRepository.InsertAndSave(reservation);
             return new ApiResponse<string>("Reserva creada correctamente");
         }
+
 
         public async Task<ApiResponse<string>> Update(AddEditReservations dto)
         {

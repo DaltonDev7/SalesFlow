@@ -9,10 +9,12 @@ namespace SalesFlow.Application.Services
     public class HistoryOrdersServices : IHistoryOrdersServices
     {
         private readonly IHistoryOrderRepository repository;
+        private readonly IOrderRepository _orderRepository;
 
-        public HistoryOrdersServices(IHistoryOrderRepository repository)
+        public HistoryOrdersServices(IHistoryOrderRepository repository, IOrderRepository orderRepository)
         {
             this.repository = repository;
+            _orderRepository = orderRepository;
         }
 
         public async Task<ApiResponse<List<GetHistoryOrdersDto>>> GetHistorial()
@@ -38,6 +40,14 @@ namespace SalesFlow.Application.Services
 
             return new ApiResponse<string>("Orden registrada correctamente");
         }
+
+
+        public async Task<List<GetOrdersDto>> GetOrdersByCustomerId(int customerId)
+        {
+            return await _orderRepository.GetOrdersByCustomerId(customerId);
+        }
+
+
 
 
     }

@@ -116,7 +116,26 @@ namespace SalesFlow.Persistence.Repositories
         }
 
 
+        public async Task<List<GetOrdersDto>> GetOrdersByCustomerId(int customerId)
+        {
+            var orders = await _dbContext.Order
+                .Where(x => x.IdCustomer == customerId)
+                .OrderByDescending(x => x.DateOrder)
+                .Select(x => new GetOrdersDto
+                {
+                    Id = x.Id,
+                    CustomerName = x.Customer.Names,
+                    IdCustomer = x.Customer.Id,
+                    DateOrder = x.DateOrder,
+                    EmployeName = x.User.Names + " " + x.User.LastNames,
+                    OrderType = x.OrderType,
+                    StatusOrder = (int)x.StatusOrder,
+                    Total = x.Total
+                })
+                .ToListAsync();
 
+            return orders;
+        }
 
 
 

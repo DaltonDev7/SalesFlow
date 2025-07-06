@@ -16,11 +16,11 @@ namespace SalesFlow.Api.Controllers
             _reservationsServices = reservationsServices;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetReservations()
+        [HttpGet("by-date")]
+        public async Task<IActionResult> GetByDate([FromQuery] DateTime date)
         {
-            var response = await _reservationsServices.GetReservations();
-            return Ok(response);
+            var result = await _reservationsServices.GetReservationsByDate(date);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -36,5 +36,13 @@ namespace SalesFlow.Api.Controllers
             var response = await _reservationsServices.Update(dto);
             return Ok(response);
         }
+
+        [HttpGet("by-customer/{customerId}")]
+        public async Task<IActionResult> GetByCustomer(int customerId)
+        {
+            var result = await _reservationsServices.GetReservationsByCustomerId(customerId);
+            return Ok(result);
+        }
+
     }
 }

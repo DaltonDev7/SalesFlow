@@ -2,6 +2,7 @@
 using SalesFlow.Application.Feature.Orders.Commands;
 using SalesFlow.Application.Feature.Orders.Queries;
 using SalesFlow.Application.Feature.OrdersDetails.Queries;
+using SalesFlow.Application.Interfaces.Services;
 
 namespace SalesFlow.Api.Controllers
 {
@@ -9,6 +10,16 @@ namespace SalesFlow.Api.Controllers
     [ApiController]
     public class OrderController : BaseApiController
     {
+
+        private readonly IHistoryOrdersServices _historyOrderRepository;
+
+        public OrderController(IHistoryOrdersServices historyOrderRepository)
+        {
+            _historyOrderRepository = historyOrderRepository;
+        }
+
+
+
         // Crear un pedido
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrdersCommand command)
@@ -47,6 +58,15 @@ namespace SalesFlow.Api.Controllers
             var result = await Mediator.Send(command);
             return Ok(result);
         }
+
+        [HttpGet("by-customer/{customerId}")]
+        public async Task<IActionResult> GetOrdersByCustomerId(int customerId)
+        {
+            var result = await _historyOrderRepository.GetOrdersByCustomerId(customerId);
+            return Ok(result);
+        }
+
+
 
     }
 }

@@ -7,6 +7,9 @@ namespace SalesFlow.Application.Interfaces.Repositories
 {
     public interface IReservationRepository : IBaseRepository<Reservations>
     {
-        Task<List<GetReservationsDto>> GetReservations();
+        Task<List<GetReservationsDto>> GetReservationsByDate(DateTime date);
+
+        Task<List<GetReservationsDto>> GetReservationsByCustomerId(int customerId);
+
     }
 }

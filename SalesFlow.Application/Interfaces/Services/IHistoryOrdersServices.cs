@@ -13,5 +13,8 @@ namespace SalesFlow.Application.Interfaces.Services
         Task<ApiResponse<List<GetHistoryOrdersDto>>> GetHistorial();
 
         Task<ApiResponse<string>> CreateHistorial(CreateHistoryOrdersDto data);
+
+        Task<List<GetOrdersDto>> GetOrdersByCustomerId(int customerId);
+
     }
 }

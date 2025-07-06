@@ -10,10 +10,12 @@ namespace SalesFlow.Application.Interfaces.Services
 {
     public interface IReservationsServices
     {
-        Task<ApiResponse<List<GetReservationsDto>>> GetReservations();
+        Task<ApiResponse<List<GetReservationsDto>>> GetReservationsByDate(DateTime date);
         Task<ApiResponse<string>> Add(AddEditReservations dto);
 
         Task<ApiResponse<string>> Update(AddEditReservations dto);
+
+        Task<ApiResponse<List<GetReservationsDto>>> GetReservationsByCustomerId(int customerId);
 
     }
 }
