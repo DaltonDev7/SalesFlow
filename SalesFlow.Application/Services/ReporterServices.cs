@@ -3,12 +3,14 @@ using SalesFlow.Application.Dtos.Authentication;
 using SalesFlow.Application.Interfaces.Repositories;
 using SalesFlow.Application.Interfaces.Services;
 using SalesFlow.Application.Wrappers;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SalesFlow.Application.Services
 {
     public class ReporterServices : IReporterServices
     {
         private readonly IOrderRepository orderRepository;
+
 
         public ReporterServices(IOrderRepository orderRepository)
         {
@@ -51,6 +53,12 @@ namespace SalesFlow.Application.Services
             return new ApiResponse<List<ProductSalesDto>>(data);
         }
 
+
+        public async Task<ApiResponse<List<GetOrdersDto>>> GetOrders()
+        {
+            var data = await orderRepository.GetAllOrders();
+            return new ApiResponse<List<GetOrdersDto>>(data);
+        }
 
     }
 }

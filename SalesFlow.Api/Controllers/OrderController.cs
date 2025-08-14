@@ -12,10 +12,12 @@ namespace SalesFlow.Api.Controllers
     {
 
         private readonly IHistoryOrdersServices _historyOrderRepository;
+        private readonly IReporterServices _reporterServices;
 
-        public OrderController(IHistoryOrdersServices historyOrderRepository)
+        public OrderController(IHistoryOrdersServices historyOrderRepository, IReporterServices reporterServices)
         {
             _historyOrderRepository = historyOrderRepository;
+            _reporterServices = reporterServices;
         }
 
 
@@ -52,6 +54,7 @@ namespace SalesFlow.Api.Controllers
             return Ok(result);
         }
 
+
        [HttpPut]
         public async Task<IActionResult> UpdateOrder([FromBody] UpdateOrderCommand command)
         {
@@ -67,6 +70,12 @@ namespace SalesFlow.Api.Controllers
         }
 
 
+        [HttpGet("getallorders")]
+        public async Task<IActionResult> Getallorders()
+        {
+            var result = await _reporterServices.GetOrders();
+            return Ok(result);
+        }
 
     }
 }

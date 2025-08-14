@@ -16,6 +16,41 @@ namespace SalesFlow.Persistence.Repositories
         }
         public async Task<List<GetOrdersDto>> GetOrders()
         {
+            var today = DateTime.Today; // fecha actual con hora 00:00:00
+
+            var rawOrders = await _dbContext.Order
+                .Where(x => x.DateOrder.Date == today) // 📅 Filtra solo las órdenes del día
+                .OrderByDescending(x => x.DateOrder) // 🔁 Ordena por fecha descendente
+                .Select(x => new {
+                    x.Id,
+                    CustomerName = x.Customer.Names,
+                    IdCustomer = x.Customer.Id,
+                    x.DateOrder,
+                    EmployeName = x.User.Names + " " + x.User.LastNames,
+                    x.OrderType,
+                    x.StatusOrder,
+                    x.Total
+                })
+                .ToListAsync();
+
+            var result = rawOrders.Select(x => new GetOrdersDto
+            {
+                Id = x.Id,
+                CustomerName = x.CustomerName,
+                IdCustomer = x.IdCustomer,
+                DateOrder = x.DateOrder,
+                EmployeName = x.EmployeName,
+                OrderType = x.OrderType,
+                StatusOrder = (int)x.StatusOrder,
+                Total = x.Total
+            }).ToList();
+
+            return result;
+        }
+
+        public async Task<List<GetOrdersDto>> GetAllOrders()
+        {
+        
             var rawOrders = await _dbContext.Order
                 .OrderByDescending(x => x.DateOrder) // 🔁 Ordena por fecha descendente
                 .Select(x => new {

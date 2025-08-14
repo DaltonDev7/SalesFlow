@@ -6,7 +6,7 @@ namespace SalesFlow.Application.Interfaces.Services
     public interface IReporterServices
     {
         Task<ApiResponse<decimal>> GetTodayRevenueAsync();
-
+        Task<ApiResponse<List<GetOrdersDto>>> GetOrders();
         Task<ApiResponse<ReporteToday>> GetTodayPaymentsAsync();
 
         Task<ApiResponse<List<CategorySalesDto>>> GetSalesByCategoryAsync(DateTime? date = null);

@@ -12,7 +12,7 @@ namespace SalesFlow.Application.Interfaces.Repositories
         Task<List<GetOrdersDto>> GetOrders();
         Task<ReporteToday> GetTodayPaymentsAsync();
         Task<decimal> GetTodayRevenueAsync();
-
+        Task<List<GetOrdersDto>> GetAllOrders();
         Task<List<GetOrdersDto>> GetOrdersByCustomerId(int customerId);
 
         //Task<List<CategorySalesDto>> GetTodaySalesByCategoryAsync();
