@@ -12,6 +12,7 @@ namespace SalesFlow.Application.Feature.Orders.Commands
         public int Id { get; set; } // ID del pedido a actualizar
         public int IdCustomer { get; set; }
         public int IdEmploye { get; set; }
+        public int? IdPaymentMethod { get; set; }
         public DateTime DateOrder { get; set; }
         public decimal Total { get; set; }
         public OrderStatus StatusOrder { get; set; }
@@ -50,11 +51,12 @@ namespace SalesFlow.Application.Feature.Orders.Commands
             }
 
             // Actualizar propiedades básicas
-            existingOrder.IdCustomer = command.IdCustomer;
+            existingOrder.IdCustomer = null;
             existingOrder.IdEmploye = command.IdEmploye;
-            existingOrder.DateOrder = DateTime.UtcNow;
+            //existingOrder.DateOrder = DateTime.UtcNow;
             existingOrder.StatusOrder = command.StatusOrder;
             existingOrder.OrderType = command.OrderType;
+            existingOrder.IdPaymentMethod = command.IdPaymentMethod;
             existingOrder.LastModified = DateTime.UtcNow;
 
             // Guardar cambios preliminares en la orden

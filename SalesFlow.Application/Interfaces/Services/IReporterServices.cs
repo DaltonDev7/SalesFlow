@@ -8,9 +8,11 @@ namespace SalesFlow.Application.Interfaces.Services
         Task<ApiResponse<decimal>> GetTodayRevenueAsync();
         Task<ApiResponse<List<GetOrdersDto>>> GetOrders();
         Task<ApiResponse<ReporteToday>> GetTodayPaymentsAsync();
-
+        Task<ApiResponse<SalesByDateResponseDto>> GetSalesByDateAsync(DateTime date, bool onlyPaid = true);
         Task<ApiResponse<List<CategorySalesDto>>> GetSalesByCategoryAsync(DateTime? date = null);
 
         Task<ApiResponse<List<ProductSalesDto>>> GetSalesByProductAsync(DateTime? date = null);
+
+        Task<ApiResponse<SalesByMonthResponseDto>> GetSalesByMonthAsync(int year, int month, bool onlyPaid = true);
     }
 }

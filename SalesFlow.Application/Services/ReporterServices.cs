@@ -29,6 +29,18 @@ namespace SalesFlow.Application.Services
             return new ApiResponse<decimal>(data);
         }
 
+        public async Task<ApiResponse<SalesByDateResponseDto>> GetSalesByDateAsync(DateTime date, bool onlyPaid = true)
+        {
+            var data = await orderRepository.GetSalesByDateAsync(date, onlyPaid);
+            return new ApiResponse<SalesByDateResponseDto>(data);
+        }
+
+        public async Task<ApiResponse<SalesByMonthResponseDto>> GetSalesByMonthAsync(int year, int month, bool onlyPaid = true)
+        {
+            var data = await orderRepository.GetSalesByMonthAsync(year, month, onlyPaid);
+            return new ApiResponse<SalesByMonthResponseDto>(data);
+        }
+
         //public async Task<ApiResponse<List<CategorySalesDto>>> GetTodaySalesByCategoryAsync()
         //{
         //    var data = await orderRepository.GetTodaySalesByCategoryAsync();

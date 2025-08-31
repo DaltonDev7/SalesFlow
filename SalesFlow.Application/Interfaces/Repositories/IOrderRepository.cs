@@ -9,6 +9,8 @@ namespace SalesFlow.Application.Interfaces.Repositories
     public interface IOrderRepository : IBaseRepository<Order>
     {
 
+        Task<SalesByMonthResponseDto> GetSalesByMonthAsync(int year, int month, bool onlyPaid = true);
+        Task<SalesByDateResponseDto> GetSalesByDateAsync(DateTime date, bool onlyPaid = true);
         Task<List<GetOrdersDto>> GetOrders();
         Task<ReporteToday> GetTodayPaymentsAsync();
         Task<decimal> GetTodayRevenueAsync();

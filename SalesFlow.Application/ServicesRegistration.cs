@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.Extensions.DependencyInjection;
+using SalesFlow.Application.Feature.Orders.Commands;
 using SalesFlow.Application.Interfaces.Services;
 using SalesFlow.Application.Mappings;
 using SalesFlow.Application.Services;
@@ -23,11 +24,14 @@ namespace SalesFlow.Application
             services.AddTransient<IAuthenticationServices, AuthenticationServices>();
             services.AddTransient<IReporterServices, ReporterServices>();
             services.AddTransient<IRolesServices, RoleServices>();
+            services.AddTransient<IAlertService, AlertService>();
             services.AddTransient<IPaymentServices, PaymentServices>();
             services.AddTransient<IHistoryOrdersServices, HistoryOrdersServices>();
             services.AddTransient<IProductServices, ProductServices>();
             services.AddTransient<IReservationsServices, ReservationsServices>();
             services.AddTransient<ITablesServices, TablesServices>();
+
+            services.AddTransient<IProductosFaltanteManager, ProductosFaltanteManager>();
            
 
         }

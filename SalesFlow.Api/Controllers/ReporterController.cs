@@ -3,6 +3,8 @@ using SalesFlow.Application.Dtos;
 using SalesFlow.Application.Feature.Recipes.Queries;
 using SalesFlow.Application.Interfaces.Services;
 using SalesFlow.Application.Services;
+using SalesFlow.Application.Wrappers;
+using System.Globalization;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace SalesFlow.Api.Controllers
@@ -70,6 +72,27 @@ namespace SalesFlow.Api.Controllers
         {
             var response = await _reporterServices.GetSalesByProductAsync(date);
             return Ok(response);
+        }
+
+        [HttpGet("sales-by-date")]
+        public async Task<IActionResult> GetSalesByDate([FromQuery] DateTime date, [FromQuery] bool onlyPaid = true)
+        {
+
+            //if (!DateTime.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var localDate))
+            //    return BadRequest("Invalid date format. Use yyyy-MM-dd.");
+
+            var result = await _reporterServices.GetSalesByDateAsync(date, onlyPaid);
+            return Ok(result);
+        }
+
+        [HttpGet("sales-by-month")]
+        public async Task<IActionResult> GetSalesByMonth([FromQuery] int year, [FromQuery] int month, [FromQuery] bool onlyPaid = true)
+        {
+            if (year < 2000 || month < 1 || month > 12)
+                return BadRequest("Parámetros inválidos. Usa year>=2000 y month entre 1 y 12.");
+
+            var result = await _reporterServices.GetSalesByMonthAsync(year, month, onlyPaid);
+            return Ok(result);
         }
 
 

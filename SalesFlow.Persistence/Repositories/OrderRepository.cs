@@ -23,12 +23,16 @@ namespace SalesFlow.Persistence.Repositories
                 .OrderByDescending(x => x.DateOrder) // 🔁 Ordena por fecha descendente
                 .Select(x => new {
                     x.Id,
-                    CustomerName = x.Customer.Names,
-                    IdCustomer = x.Customer.Id,
+                    CustomerName = x.CustomerName,
+                    CustomerNameV2 = x.Customer != null
+        ? ((x.Customer.Names ?? "") + " " + (x.Customer.LastNames ?? "")).Trim()
+        : "",
+                    IdCustomer = x.Customer != null ? x.Customer.Id : 0,
                     x.DateOrder,
                     EmployeName = x.User.Names + " " + x.User.LastNames,
                     x.OrderType,
                     x.StatusOrder,
+                    x.IdPaymentMethod,
                     x.Total
                 })
                 .ToListAsync();
@@ -37,10 +41,12 @@ namespace SalesFlow.Persistence.Repositories
             {
                 Id = x.Id,
                 CustomerName = x.CustomerName,
+                CustomerNameV2 = x.CustomerNameV2,
                 IdCustomer = x.IdCustomer,
                 DateOrder = x.DateOrder,
                 EmployeName = x.EmployeName,
                 OrderType = x.OrderType,
+                IdPaymentMethod = x.IdPaymentMethod,
                 StatusOrder = (int)x.StatusOrder,
                 Total = x.Total
             }).ToList();
@@ -50,15 +56,14 @@ namespace SalesFlow.Persistence.Repositories
 
         public async Task<List<GetOrdersDto>> GetAllOrders()
         {
-        
             var rawOrders = await _dbContext.Order
-                .OrderByDescending(x => x.DateOrder) // 🔁 Ordena por fecha descendente
+                .OrderByDescending(x => x.DateOrder)
                 .Select(x => new {
                     x.Id,
-                    CustomerName = x.Customer.Names,
-                    IdCustomer = x.Customer.Id,
+                    CustomerName = x.CustomerName ?? "",    // si es null, devuelve vacío
+                    IdCustomer = x.Customer != null ? x.Customer.Id : (int?)null, // nullable
                     x.DateOrder,
-                    EmployeName = x.User.Names + " " + x.User.LastNames,
+                    EmployeName = x.User != null ? (x.User.Names + " " + x.User.LastNames) : "",
                     x.OrderType,
                     x.StatusOrder,
                     x.Total
@@ -69,16 +74,17 @@ namespace SalesFlow.Persistence.Repositories
             {
                 Id = x.Id,
                 CustomerName = x.CustomerName,
-                IdCustomer = x.IdCustomer,
+                IdCustomer = x.IdCustomer, // puede ser null, depende de tu DTO
                 DateOrder = x.DateOrder,
                 EmployeName = x.EmployeName,
                 OrderType = x.OrderType,
-                StatusOrder = (int)x.StatusOrder,
+                StatusOrder = (int)x.StatusOrder, // si es null lo mando como 0
                 Total = x.Total
             }).ToList();
 
             return result;
         }
+
 
 
         public async Task<decimal> GetTodayRevenueAsync()
@@ -170,6 +176,96 @@ namespace SalesFlow.Persistence.Repositories
                 .ToListAsync();
 
             return orders;
+        }
+
+        public async Task<SalesByMonthResponseDto> GetSalesByMonthAsync(int year, int month, bool onlyPaid = true)
+        {
+            var start = new DateTime(year, month, 1);
+            var end = start.AddMonths(1);
+
+            var baseQuery = _dbContext.OrderDetail
+                .AsNoTracking()
+                .Where(od => od.Order.DateOrder >= start && od.Order.DateOrder < end);
+
+            if (onlyPaid)
+                baseQuery = baseQuery.Where(od => od.Order.StatusOrder == OrderStatus.PAGADO);
+
+            var items = await baseQuery
+                .GroupBy(od => new
+                {
+                    od.IdProduct,
+                    ProductName = od.Product.Name,
+                    CategoryId = od.Product.Category.Id,
+                    CategoryName = od.Product.Category.Name
+                })
+                .Select(g => new SalesByMonthItemDto
+                {
+                    ProductId = g.Key.IdProduct,
+                    ProductName = g.Key.ProductName,
+                    CategoryId = g.Key.CategoryId,
+                    CategoryName = g.Key.CategoryName,
+                    VecesVendido = g.Count(),                 // o: g.Select(x => x.IdOrder).Distinct().Count()
+                    CantidadVendida = g.Sum(x => x.Amount),
+                    TotalProducto = g.Sum(x => x.SubTotal)
+                })
+                .OrderByDescending(x => x.TotalProducto)
+                .ToListAsync();
+
+            return new SalesByMonthResponseDto
+            {
+                Year = year,
+                Month = month,
+                Items = items,
+                TotalDelMes = items.Sum(x => x.TotalProducto)
+            };
+        }
+
+
+        public async Task<SalesByDateResponseDto> GetSalesByDateAsync(DateTime date, bool onlyPaid = true)
+        {
+            var targetDate = date.Date;
+            var nextDate = targetDate.AddDays(1);
+
+            // Base query: detalles dentro del día
+            var baseQuery = _dbContext.OrderDetail
+                .AsNoTracking()
+                .Where(od => od.Order.DateOrder >= targetDate && od.Order.DateOrder < nextDate);
+
+            if (onlyPaid)
+            {
+                baseQuery = baseQuery.Where(od => od.Order.StatusOrder == OrderStatus.PAGADO);
+            }
+
+            // Agrupamos por Producto + Categoría
+            var items = await baseQuery
+                .GroupBy(od => new
+                {
+                    od.IdProduct,
+                    ProductName = od.Product.Name,
+                    CategoryId = od.Product.Category.Id,
+                    CategoryName = od.Product.Category.Name
+                })
+                .Select(g => new SalesByDateItemDto
+                {
+                    ProductId = g.Key.IdProduct,
+                    ProductName = g.Key.ProductName,
+                    CategoryId = g.Key.CategoryId,
+                    CategoryName = g.Key.CategoryName,
+                    VecesVendido = g.Count(),                    // número de líneas de detalle del producto
+                    CantidadVendida = g.Sum(x => x.Amount),      // suma de unidades vendidas
+                    TotalProducto = g.Sum(x => x.SubTotal)       // suma de subtotales
+                })
+                .OrderByDescending(x => x.TotalProducto)
+                .ToListAsync();
+
+            var totalDelDia = items.Sum(x => x.TotalProducto);
+
+            return new SalesByDateResponseDto
+            {
+                Date = targetDate,
+                Items = items,
+                TotalDelDia = totalDelDia
+            };
         }
 
 
