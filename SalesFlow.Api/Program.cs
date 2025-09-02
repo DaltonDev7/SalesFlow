@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddPersistenceLayer(builder.Configuration);
-builder.Services.AddApplicationLayer();
+builder.Services.AddApplicationLayer(builder.Configuration); // ? pasar IConfiguration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApiVersioningExtension();

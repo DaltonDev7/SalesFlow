@@ -11,6 +11,9 @@ namespace SalesFlow.Application.Interfaces.Repositories
 
         Task<SalesByMonthResponseDto> GetSalesByMonthAsync(int year, int month, bool onlyPaid = true);
         Task<SalesByDateResponseDto> GetSalesByDateAsync(DateTime date, bool onlyPaid = true);
+
+        Task<GetOrderWithDetailsDto?> GetOrderWithDetailsById(int orderId);
+        Task<List<GetOrderWithDetailsDto>> GetAllOrdersWithDetails();
         Task<List<GetOrdersDto>> GetOrders();
         Task<ReporteToday> GetTodayPaymentsAsync();
         Task<decimal> GetTodayRevenueAsync();

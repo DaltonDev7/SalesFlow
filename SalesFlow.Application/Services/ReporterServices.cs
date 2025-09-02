@@ -3,6 +3,7 @@ using SalesFlow.Application.Dtos.Authentication;
 using SalesFlow.Application.Interfaces.Repositories;
 using SalesFlow.Application.Interfaces.Services;
 using SalesFlow.Application.Wrappers;
+using SalesFlow.Domain.Entities;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SalesFlow.Application.Services
@@ -72,5 +73,16 @@ namespace SalesFlow.Application.Services
             return new ApiResponse<List<GetOrdersDto>>(data);
         }
 
+        public async Task<ApiResponse<GetOrderWithDetailsDto>> GetOrderWithDetailsById(int orderId)
+        {
+            var data = await orderRepository.GetOrderWithDetailsById(orderId);
+            return new ApiResponse<GetOrderWithDetailsDto>(data);
+        }
+
+        public async Task<ApiResponse<List<GetOrderWithDetailsDto>>> GetAllOrdersWithDetails()
+        {
+            var data = await orderRepository.GetAllOrdersWithDetails();
+            return new ApiResponse<List<GetOrderWithDetailsDto>>(data);
+        }
     }
 }

@@ -9,11 +9,13 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SalesFlow.Domain\SalesFlow.Domain.csproj" />
-    
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

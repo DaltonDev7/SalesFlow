@@ -12,6 +12,9 @@ namespace SalesFlow.Application.Dtos
         public int? IdPaymentMethod { get; set; }
 
         public int? IdCustomer { get; set; }
+        public int? IdCategory { get; set; }
+
+
 
         public string EmployeName { get; set; }
         public DateTime DateOrder { get; set; }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SalesFlow.Application.Dtos;
 using SalesFlow.Application.Feature.Orders.Commands;
 using SalesFlow.Application.Feature.Orders.Queries;
 using SalesFlow.Application.Feature.OrdersDetails.Queries;
 using SalesFlow.Application.Interfaces.Services;
+using SalesFlow.Application.Wrappers;
 
 namespace SalesFlow.Api.Controllers
 {
@@ -75,6 +77,27 @@ namespace SalesFlow.Api.Controllers
         {
             var result = await _reporterServices.GetOrders();
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Obtener todas las órdenes con sus detalles
+        /// </summary>
+        [HttpGet("with-details")]
+        public async Task<ActionResult<ApiResponse<List<GetOrderWithDetailsDto>>>> GetAllOrdersWithDetails()
+        {
+            var response = await _reporterServices.GetAllOrdersWithDetails();
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Obtener una orden específica con sus detalles
+        /// </summary>
+        [HttpGet("with-details/{orderId:int}")]
+        public async Task<ActionResult<ApiResponse<GetOrderWithDetailsDto>>> GetOrderWithDetailsById(int orderId)
+        {
+            var response = await _reporterServices.GetOrderWithDetailsById(orderId);
+
+            return Ok(response);
         }
 
     }

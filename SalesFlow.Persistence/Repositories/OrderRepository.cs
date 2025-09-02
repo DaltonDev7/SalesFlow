@@ -85,6 +85,71 @@ namespace SalesFlow.Persistence.Repositories
             return result;
         }
 
+        public async Task<List<GetOrderWithDetailsDto>> GetAllOrdersWithDetails()
+        {
+            var orders = await _dbContext.Order
+                .AsNoTracking()
+                .OrderByDescending(o => o.DateOrder)
+                .Select(o => new GetOrderWithDetailsDto
+                {
+                    Id = o.Id,
+                    CustomerName = o.CustomerName ?? "",
+                    IdCustomer = o.Customer != null ? o.Customer.Id : (int?)null,
+                    DateOrder = o.DateOrder,
+                    EmployeName = o.User != null ? (o.User.Names + " " + o.User.LastNames) : "",
+                    OrderType = o.OrderType,
+                    StatusOrder = (int)o.StatusOrder,
+                    Total = o.Total,
+                    IdPaymentMethod = o.IdPaymentMethod ?? 0,
+
+                    OrderDetails = o.OrderDetails.Select(od => new GetOrderDetailDto
+                    {
+                        Id = od.Id,
+                        IdProduct = od.IdProduct,
+                        ProductName = od.Product != null ? od.Product.Name : "",
+                        Amount = od.Amount,
+                        UnitPrice = od.UnitPrice,
+                        SubTotal = od.SubTotal,
+                        IdCategory = od.Product != null ? (int?)od.Product.Category.Id : null,
+                        CategoryName = od.Product != null ? od.Product.Category.Name : ""
+                    }).ToList()
+                })
+                .ToListAsync();
+
+            return orders;
+        }
+
+        public async Task<GetOrderWithDetailsDto?> GetOrderWithDetailsById(int orderId)
+        {
+            return await _dbContext.Order
+                .AsNoTracking()
+                .Where(o => o.Id == orderId)
+                .Select(o => new GetOrderWithDetailsDto
+                {
+                    Id = o.Id,
+                    CustomerName = o.CustomerName ?? "",
+                    IdCustomer = o.Customer != null ? o.Customer.Id : (int?)null,
+                    DateOrder = o.DateOrder,
+                    EmployeName = o.User != null ? (o.User.Names + " " + o.User.LastNames) : "",
+                    OrderType = o.OrderType,
+                    StatusOrder = (int)o.StatusOrder,
+                    Total = o.Total,
+                    IdPaymentMethod = o.IdPaymentMethod ?? 0,
+                    OrderDetails = o.OrderDetails.Select(od => new GetOrderDetailDto
+                    {
+                        Id = od.Id,
+                        IdProduct = od.IdProduct,
+                        ProductName = od.Product != null ? od.Product.Name : "",
+                        Amount = od.Amount,
+                        UnitPrice = od.UnitPrice,
+                        SubTotal = od.SubTotal,
+                        IdCategory = od.Product != null ? (int?)od.Product.Category.Id : null,
+                        CategoryName = od.Product != null ? od.Product.Category.Name : ""
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
+        }
+
 
 
         public async Task<decimal> GetTodayRevenueAsync()

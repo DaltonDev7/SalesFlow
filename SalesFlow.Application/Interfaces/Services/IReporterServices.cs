@@ -13,6 +13,10 @@ namespace SalesFlow.Application.Interfaces.Services
 
         Task<ApiResponse<List<ProductSalesDto>>> GetSalesByProductAsync(DateTime? date = null);
 
+        Task<ApiResponse<GetOrderWithDetailsDto>> GetOrderWithDetailsById(int orderId);
+
+        Task<ApiResponse<List<GetOrderWithDetailsDto>>> GetAllOrdersWithDetails();
+
         Task<ApiResponse<SalesByMonthResponseDto>> GetSalesByMonthAsync(int year, int month, bool onlyPaid = true);
     }
 }
