@@ -29,6 +29,7 @@ namespace SalesFlow.Persistence.Repositories
         : "",
                     IdCustomer = x.Customer != null ? x.Customer.Id : 0,
                     x.DateOrder,
+                    Address = x.Address ?? "",   // ✅ Si es null, devuelve ""
                     EmployeName = x.User.Names + " " + x.User.LastNames,
                     x.OrderType,
                     x.StatusOrder,
@@ -44,6 +45,7 @@ namespace SalesFlow.Persistence.Repositories
                 CustomerNameV2 = x.CustomerNameV2,
                 IdCustomer = x.IdCustomer,
                 DateOrder = x.DateOrder,
+                Address = x.Address,
                 EmployeName = x.EmployeName,
                 OrderType = x.OrderType,
                 IdPaymentMethod = x.IdPaymentMethod,
@@ -61,6 +63,9 @@ namespace SalesFlow.Persistence.Repositories
                 .Select(x => new {
                     x.Id,
                     CustomerName = x.CustomerName ?? "",    // si es null, devuelve vacío
+                    CustomerNameV2 = x.Customer != null
+        ? ((x.Customer.Names ?? "") + " " + (x.Customer.LastNames ?? "")).Trim()
+        : "",
                     IdCustomer = x.Customer != null ? x.Customer.Id : (int?)null, // nullable
                     x.DateOrder,
                     EmployeName = x.User != null ? (x.User.Names + " " + x.User.LastNames) : "",
@@ -74,6 +79,7 @@ namespace SalesFlow.Persistence.Repositories
             {
                 Id = x.Id,
                 CustomerName = x.CustomerName,
+                CustomerNameV2 = x.CustomerNameV2,
                 IdCustomer = x.IdCustomer, // puede ser null, depende de tu DTO
                 DateOrder = x.DateOrder,
                 EmployeName = x.EmployeName,
@@ -94,7 +100,10 @@ namespace SalesFlow.Persistence.Repositories
                 {
                     Id = o.Id,
                     CustomerName = o.CustomerName ?? "",
-                    IdCustomer = o.Customer != null ? o.Customer.Id : (int?)null,
+                    CustomerNameV2 = o.Customer != null
+        ? ((o.Customer.Names ?? "") + " " + (o.Customer.LastNames ?? "")).Trim()
+        : "",
+                    IdCustomer = o.Customer != null ? o.Customer.Id : 0,
                     DateOrder = o.DateOrder,
                     EmployeName = o.User != null ? (o.User.Names + " " + o.User.LastNames) : "",
                     OrderType = o.OrderType,

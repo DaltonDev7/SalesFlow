@@ -13,6 +13,8 @@ namespace SalesFlow.Application.Feature.Orders.Commands
         public int IdCustomer { get; set; }
         public int IdEmploye { get; set; }
         public int? IdPaymentMethod { get; set; }
+        public string? CustomerName { get; set; }
+        public string? Address { get; set; }
         public DateTime DateOrder { get; set; }
         public decimal Total { get; set; }
         public OrderStatus StatusOrder { get; set; }
@@ -51,9 +53,11 @@ namespace SalesFlow.Application.Feature.Orders.Commands
             }
 
             // Actualizar propiedades básicas
-            existingOrder.IdCustomer = null;
+        //    existingOrder.IdCustomer = null;
             existingOrder.IdEmploye = command.IdEmploye;
             //existingOrder.DateOrder = DateTime.UtcNow;
+            existingOrder.CustomerName = command.CustomerName;
+            existingOrder.Address = command.Address;
             existingOrder.StatusOrder = command.StatusOrder;
             existingOrder.OrderType = command.OrderType;
             existingOrder.IdPaymentMethod = command.IdPaymentMethod;

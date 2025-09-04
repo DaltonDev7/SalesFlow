@@ -15,6 +15,8 @@ namespace SalesFlow.Domain.Entities
         public string OrderType { get; set; }
         public int? IdPaymentMethod { get; set; }
 
+        public string? Address { get; set; }
+
 
         // Relación con Customer (Muchos a uno)
         public virtual ApplicationUser Customer { get; set; }

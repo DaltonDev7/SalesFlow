@@ -36,6 +36,7 @@ namespace SalesFlow.Application.Feature.Orders.Commands
         public int IdEmploye { get; set; }
         public DateTime DateOrder { get; set; }
         public decimal Total { get; set; }
+        public string? Address { get; set; }
         public OrderStatus StatusOrder { get; set; }
 
         public int? IdPaymentMethod { get; set; }
@@ -131,6 +132,7 @@ namespace SalesFlow.Application.Feature.Orders.Commands
                 IdCustomer = command.IdCustomer,
                 IdPaymentMethod = command.IdPaymentMethod,
                 CustomerName = command.CustomerName,
+                Address = command.Address,
                 IdEmploye = command.IdEmploye,
                 OrderType = command.OrderType,
                 Total = 0 // Inicializamos el total
@@ -194,12 +196,11 @@ namespace SalesFlow.Application.Feature.Orders.Commands
                                 cancellationToken);
 
                         }
-                        catch
+                        catch (ApiException ex)
                         {
                             // Si algo falla al descontar un ingrediente, revertimos la orden creada
                             await _repository.DeleteAndSave(newOrder.Id);
-                            await _orderDetailRepository.DeleteAndSave(newDetail.Id);
-                           // throw;
+                            throw new ApiException(ex.Message, (int)HttpStatusCode.InternalServerError);
                         }
                     }
                 }
@@ -216,11 +217,17 @@ namespace SalesFlow.Application.Feature.Orders.Commands
                             product.Name,
                             cancellationToken);
                     }
-                    catch
+                    catch (ApiException ex)
                     {
                         await _repository.DeleteAndSave(newOrder.Id);
-                        await _orderDetailRepository.DeleteAndSave(newDetail.Id);
-                        throw;
+
+                        throw new ApiException(ex.Message, (int)HttpStatusCode.InternalServerError);
+                        //return new ApiResponse<List<ProductoFaltanteConteoDto>>()
+                        //{
+                        //    Succeeded = false,
+                        //    Message = ex.Message, // "Inventario insuficiente para el producto X" o el que sea
+                        //    Data = null
+                        //};
                     }
                 }
             }

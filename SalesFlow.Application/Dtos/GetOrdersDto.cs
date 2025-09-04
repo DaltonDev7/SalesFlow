@@ -13,6 +13,7 @@ namespace SalesFlow.Application.Dtos
 
         public int? IdCustomer { get; set; }
         public int? IdCategory { get; set; }
+        public string? Address { get; set; }
 
 
 
